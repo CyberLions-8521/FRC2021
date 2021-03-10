@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivebase extends SubsystemBase {
@@ -15,6 +17,7 @@ public class Drivebase extends SubsystemBase {
   CANSparkMax rightMaster = new CANSparkMax(Constants.CAN.kRightMaster, MotorType.kBrushless);
   CANSparkMax leftSlave = new CANSparkMax(Constants.CAN.kLeftSlave, MotorType.kBrushless);
   CANSparkMax rightSlave = new CANSparkMax(Constants.CAN.kRightSlave, MotorType.kBrushless);
+  DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
 
   public Drivebase()
   {
@@ -23,11 +26,17 @@ public class Drivebase extends SubsystemBase {
 
     // Invert the motors
     leftMaster.setInverted(false);
-    rightMaster.setInverted(true);
+    rightMaster.setInverted(true);    
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void driveWithController(XboxController controller)
+  {
+    // left speed, right speed, squared inputs
+    drive.tankDrive(controller.getRawAxis(0), controller.getRawAxis(1), true);
   }
 }
