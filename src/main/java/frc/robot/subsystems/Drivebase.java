@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivebase extends SubsystemBase {
   /** Creates a new Drivebase. */
-  CANSparkMax leftMaster = new CANSparkMax(Constants.CAN.kLeftMaster, MotorType.kBrushless);
-  CANSparkMax rightMaster = new CANSparkMax(Constants.CAN.kRightMaster, MotorType.kBrushless);
-  CANSparkMax leftSlave = new CANSparkMax(Constants.CAN.kLeftSlave, MotorType.kBrushless);
-  CANSparkMax rightSlave = new CANSparkMax(Constants.CAN.kRightSlave, MotorType.kBrushless);
+  CANSparkMax leftMaster = new CANSparkMax(Constants.CAN.kLeftMaster, MotorType.kBrushed);
+  CANSparkMax rightMaster = new CANSparkMax(Constants.CAN.kRightMaster, MotorType.kBrushed);
+  CANSparkMax leftSlave = new CANSparkMax(Constants.CAN.kLeftSlave, MotorType.kBrushed);
+  CANSparkMax rightSlave = new CANSparkMax(Constants.CAN.kRightSlave, MotorType.kBrushed);
   DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
 
   public Drivebase()
@@ -27,6 +27,9 @@ public class Drivebase extends SubsystemBase {
     // Invert the motors
     leftMaster.setInverted(false);
     rightMaster.setInverted(true);    
+
+    // If we want to set max output
+    // drive.setMaxOutput(0.9);
   }
 
   @Override
@@ -37,6 +40,10 @@ public class Drivebase extends SubsystemBase {
   public void driveWithController(XboxController controller)
   {
     // left speed, right speed, squared inputs
-    drive.tankDrive(controller.getRawAxis(0), controller.getRawAxis(1), true);
+    double leftSpeed = controller.getRawAxis(Constants.XBOX.LEFT_STICK_Y);
+    double rightSpeed = controller.getRawAxis(Constants.XBOX.RIGHT_STICK_Y);
+    drive.tankDrive(leftSpeed, rightSpeed, true);
+    // System.out.println("Left Speed: " + leftSpeed);
+    // System.out.println("Right Speed: " + rightSpeed);
   }
 }
