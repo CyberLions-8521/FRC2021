@@ -10,23 +10,30 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.kauailabs.navx.frc.AHRS;;
 
 public class Drivebase extends SubsystemBase {
   /** Creates a new Drivebase. */
-  CANSparkMax leftMaster = new CANSparkMax(Constants.CAN.kLeftMaster, MotorType.kBrushed);
-  CANSparkMax rightMaster = new CANSparkMax(Constants.CAN.kRightMaster, MotorType.kBrushed);
-  CANSparkMax leftSlave = new CANSparkMax(Constants.CAN.kLeftSlave, MotorType.kBrushed);
-  CANSparkMax rightSlave = new CANSparkMax(Constants.CAN.kRightSlave, MotorType.kBrushed);
-  DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
+  // Motors
+  CANSparkMax m_leftMaster = new CANSparkMax(Constants.CAN.kLeftMaster, MotorType.kBrushed);
+  CANSparkMax m_rightMaster = new CANSparkMax(Constants.CAN.kRightMaster, MotorType.kBrushed);
+  CANSparkMax m_leftSlave = new CANSparkMax(Constants.CAN.kLeftSlave, MotorType.kBrushed);
+  CANSparkMax m_rightSlave = new CANSparkMax(Constants.CAN.kRightSlave, MotorType.kBrushed);
+
+  // Differential drive class
+  DifferentialDrive m_drive = new DifferentialDrive(m_leftMaster, m_rightMaster);
+
+  // Gyro
+  // AHRS m_gyro = new AHRS();
 
   public Drivebase()
   {
-    leftSlave.follow(leftMaster);
-    rightSlave.follow(rightMaster);
+    m_leftSlave.follow(m_leftMaster);
+    m_rightSlave.follow(m_rightMaster);
 
     // Invert the motors
-    leftMaster.setInverted(false);
-    rightMaster.setInverted(false);    
+    m_leftMaster.setInverted(false);
+    m_rightMaster.setInverted(false);    
 
     // If we want to set max output
     // drive.setMaxOutput(0.9);
@@ -42,7 +49,7 @@ public class Drivebase extends SubsystemBase {
     // left speed, right speed, squared inputs
     double leftSpeed = controller.getRawAxis(Constants.XBOX.LEFT_STICK_Y);
     double rightSpeed = controller.getRawAxis(Constants.XBOX.RIGHT_STICK_Y);
-    drive.tankDrive(leftSpeed, rightSpeed, true);
+    m_drive.tankDrive(leftSpeed, rightSpeed, true);
     // System.out.println("Left Speed: " + leftSpeed);
     // System.out.println("Right Speed: " + rightSpeed);
   }
