@@ -17,6 +17,7 @@ public final class Constants
 
     public static class DriveConstants
     {
+        public static final double STEER_K = 0.03;
         public static final double kP = 0.03;
     }
 

@@ -6,17 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
+// https://docs.limelightvision.io/en/latest/cs_drive_to_goal_2019.html
 import frc.robot.subsystems.Limelight;
-import frc.robot.Constants.DriveConstants;
-
-public class LimelightSeek extends CommandBase {
-  /** Creates a new LimelightSeek. */
+public class DriveToTarget extends CommandBase {
+  /** Creates a new DriveToTarget. */
   Limelight m_cam;
   Drivebase m_db;
-  boolean targetFound;
-
-  public LimelightSeek(Drivebase db, Limelight cam)
-  {
+  public DriveToTarget(Drivebase db, Limelight cam) {
     m_cam = cam;
     m_db = db;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,18 +28,7 @@ public class LimelightSeek extends CommandBase {
   @Override
   public void execute()
   {
-    double steeringAdjust = 0.0;
-    targetFound = m_cam.getIsTargetFound();
-    double tx = m_cam.getTx();
-    if (!targetFound)
-    {
-      steeringAdjust = 0.3;
-    }
-    else
-    {
-      steeringAdjust = DriveConstants.STEER_K * tx;
-    }
-    m_db.turnInPlace(steeringAdjust);
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -53,6 +38,6 @@ public class LimelightSeek extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return targetFound;
+    return false;
   }
 }

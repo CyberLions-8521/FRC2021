@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
+// https://docs.limelightvision.io/en/latest/networktables_api.html
+
 public class Limelight extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   enum LEDStatus
@@ -93,7 +95,7 @@ public class Limelight extends SubsystemBase {
   {
     return tx.getDouble(0.0);
   }
-
+  
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
