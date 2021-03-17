@@ -69,7 +69,10 @@ public class Drivebase extends SubsystemBase {
     return Rotation2d.fromDegrees(-m_gyro.getAngle());
   }
 
-
+  public void turnInPlace(double adjust)
+  {
+    m_drive.tankDrive(adjust, -adjust);
+  }
   
   public void driveWithController(XboxController controller)
   {

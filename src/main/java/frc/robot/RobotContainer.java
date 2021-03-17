@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.LimelightSeek;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -31,7 +32,7 @@ public class RobotContainer {
   // Commands
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final Drive m_driveSystem = new Drive(m_drivebase);
-  
+  private final LimelightSeek m_seek = new LimelightSeek(m_drivebase, m_limelight);
   
   
   public static final XboxController m_controller = new XboxController(Constants.IO.kXBOX);
@@ -51,10 +52,6 @@ public class RobotContainer {
    */
   private void configureButtonBindings()
   {
-    // Turn limelight LED on or off
-
-    
-
   }
 
   /**

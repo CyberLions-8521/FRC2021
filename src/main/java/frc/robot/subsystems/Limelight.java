@@ -13,7 +13,6 @@ import frc.robot.RobotContainer;
 
 public class Limelight extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-
   enum LEDStatus
   {
     ON, OFF
@@ -26,6 +25,8 @@ public class Limelight extends SubsystemBase {
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
+  NetworkTableEntry tv = table.getEntry("tv");
+
   public Limelight()
   {
     turnOnLED();
@@ -40,6 +41,8 @@ public class Limelight extends SubsystemBase {
     double y = ty.getDouble(0.0);
     // Target area (0% of image to 100% of image)
     double area = ta.getDouble(0.0);
+    // Whether or not a valid target has appeared
+    double valid = tv.getDouble(0.0);
 
     if (RobotContainer.m_controller.getAButtonPressed())
     {
@@ -57,6 +60,7 @@ public class Limelight extends SubsystemBase {
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
+    SmartDashboard.putNumber("Valid Target", valid);
     SmartDashboard.putString("Limelight LED", m_status);
   }
 
@@ -77,6 +81,17 @@ public class Limelight extends SubsystemBase {
     m_LEDStatus = LEDStatus.OFF;
     m_status = "Off";
     setEntry("ledMode", 1);
+  }
+
+  // Getters
+  public boolean getIsTargetFound()
+  {
+    return tv.getDouble(0.0) == 1.0;
+  }
+
+  public double getTx()
+  {
+    return tx.getDouble(0.0);
   }
 
   @Override

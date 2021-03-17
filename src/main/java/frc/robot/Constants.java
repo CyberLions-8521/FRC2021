@@ -14,6 +14,12 @@ package frc.robot;
  */
 public final class Constants
 {
+
+    public static class DriveConstants
+    {
+        public static final double kP = 0.03;
+    }
+
     public static class CAN
     {
         public static final int kLeftMaster = 2;
