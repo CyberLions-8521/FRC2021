@@ -110,7 +110,7 @@ public class Drivebase extends SubsystemBase {
       case ARCADE:
         double speed = controller.getRawAxis(Constants.XBOX.LEFT_STICK_Y);
         double turnRate = controller.getRawAxis(Constants.XBOX.RIGHT_STICK_X);
-        m_drive.arcadeDrive(speed, turnRate, true);
+        m_drive.arcadeDrive(speed, -turnRate, true);
         SmartDashboard.putNumber("Speed", speed);
         SmartDashboard.putNumber("Turn Rate", turnRate);
         break;
