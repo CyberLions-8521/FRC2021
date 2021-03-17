@@ -9,14 +9,27 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 public class Limelight extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
+
+  enum LEDStatus
+  {
+    ON, OFF
+  }
+
+  LEDStatus m_LEDStatus;
+  String m_status;
+
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
-  public Limelight() {}
+  public Limelight()
+  {
+    turnOnLED();
+  }
 
   @Override
   public void periodic() {
@@ -28,9 +41,42 @@ public class Limelight extends SubsystemBase {
     // Target area (0% of image to 100% of image)
     double area = ta.getDouble(0.0);
 
+    if (RobotContainer.m_controller.getAButtonPressed())
+    {
+      switch (m_LEDStatus)
+      {
+        case ON:
+          turnOffLED();
+          break;
+        case OFF:
+          turnOnLED();
+          break;
+      }
+    }
+
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
+    SmartDashboard.putString("Limelight LED", m_status);
+  }
+
+  public void setEntry(String entry, int number)
+  {
+    table.getEntry(entry).setNumber(number);
+  }
+
+  public void turnOnLED()
+  {
+    m_LEDStatus = LEDStatus.ON;
+    m_status = "On";
+    setEntry("ledMode", 0);
+  }
+
+  public void turnOffLED()
+  {
+    m_LEDStatus = LEDStatus.OFF;
+    m_status = "Off";
+    setEntry("ledMode", 1);
   }
 
   @Override
