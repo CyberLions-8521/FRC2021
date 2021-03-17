@@ -95,6 +95,11 @@ public class Limelight extends SubsystemBase {
   {
     return tx.getDouble(0.0);
   }
+
+  public double getTa()
+  {
+    return ta.getDouble(0.0);
+  }
   
   @Override
   public void simulationPeriodic() {

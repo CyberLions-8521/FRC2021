@@ -19,6 +19,8 @@ public final class Constants
     {
         public static final double STEER_K = 0.03;
         public static final double kP = 0.03;
+        public static final double MAX_OUTPUT = 0.7;
+        public static final double DRIVE_SLOW = 0.4;
     }
 
     public static class CAN

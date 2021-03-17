@@ -51,7 +51,7 @@ public class Drivebase extends SubsystemBase {
     m_rightMaster.setInverted(false);    
 
     // If we want to set max output
-    // drive.setMaxOutput(0.9);
+    m_drive.setMaxOutput(0.5);
   }
 
   @Override
@@ -71,7 +71,13 @@ public class Drivebase extends SubsystemBase {
 
   public void turnInPlace(double adjust)
   {
-    m_drive.arcadeDrive(0.0, adjust);
+    // m_drive.arcadeDrive(0.0, adjust);
+    m_drive.tankDrive(adjust, -adjust);
+  }
+
+  public void moveForward(double speed)
+  {
+    m_drive.arcadeDrive(speed, 0.0);
   }
   
   public void driveWithController(XboxController controller)

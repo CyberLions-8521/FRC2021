@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.Drivebase;
 // https://docs.limelightvision.io/en/latest/cs_drive_to_goal_2019.html
 import frc.robot.subsystems.Limelight;
@@ -12,6 +13,7 @@ public class DriveToTarget extends CommandBase {
   /** Creates a new DriveToTarget. */
   Limelight m_cam;
   Drivebase m_db;
+  
   public DriveToTarget(Drivebase db, Limelight cam) {
     m_cam = cam;
     m_db = db;
@@ -28,7 +30,17 @@ public class DriveToTarget extends CommandBase {
   @Override
   public void execute()
   {
-    
+    double area = m_cam.getTa();
+    double speed = 0.0;
+    if (area < 1.0)
+    {
+      speed = -DriveConstants.DRIVE_SLOW;
+    }
+    else
+    {
+      speed = 0.0;
+    }
+    m_db.moveForward(speed);
   }
 
   // Called once the command ends or is interrupted.
