@@ -16,6 +16,7 @@ public class LimelightSeek extends CommandBase {
   Limelight m_cam;
   Drivebase m_db;
   boolean m_targetFound;
+  boolean m_targetReached;
   double m_steeringAdjust;
 
   public LimelightSeek(Drivebase db, Limelight cam)
@@ -43,41 +44,10 @@ public class LimelightSeek extends CommandBase {
     // when the robot stops to determine if we found the ball and centered ourselves onto it
     
     // If we found the target and we're centered on it
-    if (m_targetFound && m_steeringAdjust < DriveConstants.STEER_THRESHOLD)
+    if (m_targetFound && Math.abs(m_cam.getTx()) < DriveConstants.STEER_THRESHOLD)
     {
       moveToTarget();
     }
-
-
-
-    // m_steeringAdjust = 0.0;
-    // m_targetFound = m_cam.getIsTargetFound();
-    // double tx = m_cam.getTx();
-    // if (!m_targetFound)
-    // {
-    //   m_steeringAdjust = 0.5;
-    // }
-    // else
-    // {
-    //   m_steeringAdjust = Math.min(DriveConstants.STEER_K * tx, DriveConstants.MAX_OUTPUT);
-    // }
-    
-    // m_db.turnInPlace(-m_steeringAdjust);
-    
-    // double area = m_cam.getTa();
-    // if (m_steeringAdjust < 0.25)
-    // {
-    //   double speed = 0.0;
-    //   if (area < 1.0)
-    //   {
-    //     speed = -DriveConstants.DRIVE_SLOW;
-    //   }
-    //   else
-    //   {
-    //     speed = 0.0;
-    //   }
-    //   m_db.moveForward(speed);
-    // }
   }
 
   /**
@@ -95,14 +65,14 @@ public class LimelightSeek extends CommandBase {
     // If we do not see the target, adjust the steering
     if (!m_targetFound)
     {
-      m_steeringAdjust = 0.5;
+      m_steeringAdjust = DriveConstants.TURN_SLOW;
     }
     // We DO see the target
     else
     {
       // Steer rate changes based on offset times steer rate
       // The highest you could steer is MAX_OUTPUT (0.7)
-      m_steeringAdjust = Math.min(DriveConstants.STEER_K * offset, DriveConstants.MAX_OUTPUT);
+      m_steeringAdjust = Math.min(DriveConstants.STEER_K * offset, DriveConstants.TURN_SLOW);
       // Note: The offset (tx) is 0 if the robot is perfectly centered onto the ball
     }
 
@@ -127,11 +97,14 @@ public class LimelightSeek extends CommandBase {
     {
       // Then move towards it slowly
       speed = -DriveConstants.DRIVE_SLOW;
+      m_targetReached = false;
     }
     else
     {
       speed = 0.0;
+      m_targetReached = true;
     }
+
     // Actually move
     m_db.moveForward(speed);
     

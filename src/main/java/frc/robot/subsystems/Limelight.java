@@ -21,7 +21,7 @@ public class Limelight extends SubsystemBase {
   }
 
   LEDStatus m_LEDStatus;
-  String m_status;
+  boolean m_isOn;
 
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTableEntry tx = table.getEntry("tx");
@@ -62,8 +62,8 @@ public class Limelight extends SubsystemBase {
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
-    SmartDashboard.putNumber("Valid Target", valid);
-    SmartDashboard.putString("Limelight LED", m_status);
+    SmartDashboard.putBoolean("Valid Target", valid==1.0);
+    SmartDashboard.putBoolean("Limelight LED On", m_isOn);
   }
 
   public void setEntry(String entry, int number)
@@ -74,14 +74,14 @@ public class Limelight extends SubsystemBase {
   public void turnOnLED()
   {
     m_LEDStatus = LEDStatus.ON;
-    m_status = "On";
+    m_isOn = true;
     setEntry("ledMode", 0);
   }
 
   public void turnOffLED()
   {
     m_LEDStatus = LEDStatus.OFF;
-    m_status = "Off";
+    m_isOn = false;
     setEntry("ledMode", 1);
   }
 
