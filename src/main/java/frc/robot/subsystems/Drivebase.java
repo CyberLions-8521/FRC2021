@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveMode;
 import edu.wpi.first.wpilibj.SPI;
@@ -102,15 +103,15 @@ public class Drivebase extends SubsystemBase {
     {
       case TANK:
         // left speed, right speed, squared inputs
-        double leftSpeed = controller.getRawAxis(Constants.XBOX.LEFT_STICK_Y);
-        double rightSpeed = controller.getRawAxis(Constants.XBOX.RIGHT_STICK_Y);
+        double leftSpeed = controller.getRawAxis(Constants.XBOX.LEFT_STICK_Y) * DriveConstants.MAX_OUTPUT;
+        double rightSpeed = controller.getRawAxis(Constants.XBOX.RIGHT_STICK_Y) * DriveConstants.MAX_OUTPUT;
         SmartDashboard.putNumber("Left Speed", leftSpeed);
         SmartDashboard.putNumber("Right Speed", rightSpeed);
         m_drive.tankDrive(leftSpeed, rightSpeed, true);
         break;
       case ARCADE:
-        double speed = controller.getRawAxis(Constants.XBOX.LEFT_STICK_Y);
-        double turnRate = controller.getRawAxis(Constants.XBOX.RIGHT_STICK_X);
+        double speed = controller.getRawAxis(Constants.XBOX.LEFT_STICK_Y) * DriveConstants.MAX_OUTPUT;
+        double turnRate = controller.getRawAxis(Constants.XBOX.RIGHT_STICK_X) * DriveConstants.MAX_OUTPUT;
         m_drive.arcadeDrive(speed, -turnRate, true);
         SmartDashboard.putNumber("Speed", speed);
         SmartDashboard.putNumber("Turn Rate", turnRate);
