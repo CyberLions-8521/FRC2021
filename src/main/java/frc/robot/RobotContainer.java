@@ -22,12 +22,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   // Subsystems
-  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private Drivebase m_drivebase = new Drivebase();
   private Limelight m_limelight = new Limelight();
 
   // Commands
-  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final Drive m_driveSystem = new Drive(m_drivebase);
   private final LimelightSeek m_seek = new LimelightSeek(m_drivebase, m_limelight);
   
