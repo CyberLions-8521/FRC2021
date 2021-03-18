@@ -6,16 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.LimelightSeek;
 import frc.robot.commands.Drive;
-import frc.robot.commands.DriveToTarget;
 import frc.robot.subsystems.Drivebase;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,16 +22,16 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   // Subsystems
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private Drivebase m_drivebase = new Drivebase();
   private Limelight m_limelight = new Limelight();
 
   // Commands
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final Drive m_driveSystem = new Drive(m_drivebase);
   private final LimelightSeek m_seek = new LimelightSeek(m_drivebase, m_limelight);
-  // private final DriveToTarget m_moveToTarget = new DriveToTarget(m_drivebase, m_limelight);
   
+  // Controller
   public static final XboxController m_controller = new XboxController(Constants.IO.kXBOX);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */

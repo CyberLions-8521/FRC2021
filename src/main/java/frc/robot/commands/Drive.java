@@ -8,8 +8,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.RobotContainer;
 
+// This class is the command used to control the robot via controller
 public class Drive extends CommandBase {
-  /** Creates a new TankDrive. */
+  /** Creates a new Drive. */
   private final Drivebase m_db;
   public Drive(Drivebase db) {
     m_db = db;

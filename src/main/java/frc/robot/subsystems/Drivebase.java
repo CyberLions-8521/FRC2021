@@ -83,6 +83,7 @@ public class Drivebase extends SubsystemBase {
   public void driveWithController(XboxController controller)
   {
 
+    // Use the Y button to switch between ARCADE and TANK
     if (RobotContainer.m_controller.getYButtonPressed())
     {
       if (m_mode == DriveMode.TANK)
