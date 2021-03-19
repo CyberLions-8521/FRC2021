@@ -127,6 +127,14 @@ public class Drivebase extends SubsystemBase {
     SmartDashboard.putString("Drive Mode", driveMode);
   }
 
+  // public void rotateByAngle(double degrees, boolean isClockwise)
+  // {
+  //   if (isClockwise)
+  //     degrees = -degrees;
+    
+    
+  // }
+
 
   public AHRS getGyro()
   {
