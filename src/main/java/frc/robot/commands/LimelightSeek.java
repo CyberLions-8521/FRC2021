@@ -18,9 +18,11 @@ public class LimelightSeek extends CommandBase {
   boolean m_targetFound;
   boolean m_targetReached;
   double m_steeringAdjust;
+  double time;
 
   public LimelightSeek(Drivebase db, Limelight cam)
   {
+    time = 0.0;
     m_cam = cam;
     m_db = db;
     m_steeringAdjust = 0.0;
@@ -72,10 +74,11 @@ public class LimelightSeek extends CommandBase {
     {
       // Steer rate changes based on offset times steer rate
       // The highest you could steer is MAX_OUTPUT (0.7)
-      m_steeringAdjust = Math.min(DriveConstants.STEER_K * offset, DriveConstants.TURN_SLOW);
+      m_steeringAdjust = Math.min(Math.abs(DriveConstants.STEER_K * offset), DriveConstants.TURN_SLOW);
       // Note: The offset (tx) is 0 if the robot is perfectly centered onto the ball
     }
-
+    // Reapply the sign
+    m_steeringAdjust *= (offset/offset);
     // Turn based on the steering adjustment rate determined by the if/else above
     m_db.turnInPlace(-m_steeringAdjust);
 
@@ -92,17 +95,19 @@ public class LimelightSeek extends CommandBase {
     // Speed at which the robot moves toward the ball
     double speed = 0.0;
     // The amount of space the ball takes up in the camera view
-    double area = m_cam.getTa();
+    double area = m_cam.getTa();  
     if (area < VisionConstants.BALL_AREA)
     {
       // Then move towards it slowly
       speed = -DriveConstants.DRIVE_SLOW;
       m_targetReached = false;
+      time = 0.0;
     }
     else
     {
       speed = 0.0;
       m_targetReached = true;
+      time += 0.02;
     }
 
     // Actually move
@@ -117,6 +122,7 @@ public class LimelightSeek extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    // Stop after you reach a target and it's been 5 seconds
+    return m_targetReached && (time >= 5.0);
   }
 }

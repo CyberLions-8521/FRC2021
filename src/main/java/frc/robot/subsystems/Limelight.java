@@ -31,7 +31,7 @@ public class Limelight extends SubsystemBase {
 
   public Limelight()
   {
-    turnOnLED();
+    turnOffLED();
   }
 
   @Override

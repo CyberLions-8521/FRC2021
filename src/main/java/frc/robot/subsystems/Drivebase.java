@@ -42,7 +42,9 @@ public class Drivebase extends SubsystemBase {
   public Drivebase()
   {
     // Default mode is tank drive
-    m_mode = DriveMode.TANK;
+    m_mode = DriveMode.ARCADE;
+
+    m_gyro.reset();
 
     m_leftSlave.follow(m_leftMaster);
     m_rightSlave.follow(m_rightMaster);
@@ -124,7 +126,7 @@ public class Drivebase extends SubsystemBase {
     }
 
     // Display values to smart dashboard
-    SmartDashboard.putString("Drive Mode", driveMode);
+    SmartDashboard.putString("Arcade Drive", driveMode);
   }
 
   // public void rotateByAngle(double degrees, boolean isClockwise)
