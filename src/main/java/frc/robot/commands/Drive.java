@@ -8,10 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.RobotContainer;
 
-public class TankDrive extends CommandBase {
-  /** Creates a new TankDrive. */
+// This class is the command used to control the robot via controller
+public class Drive extends CommandBase {
+  /** Creates a new Drive. */
   private final Drivebase m_db;
-  public TankDrive(Drivebase db) {
+  public Drive(Drivebase db) {
     m_db = db;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(db);
