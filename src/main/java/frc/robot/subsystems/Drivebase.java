@@ -11,7 +11,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveMode;
 import frc.robot.Constants.XBOX;
-import frc.robot.commands.Drive;
+// import frc.robot.commands.Drive;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
@@ -142,6 +142,9 @@ public class Drivebase extends SubsystemBase {
 
     // Display values to smart dashboard
     SmartDashboard.putString("Arcade Drive", driveMode);
+    SmartDashboard.putNumber("X Displacement", m_gyro.getDisplacementX());
+    SmartDashboard.putNumber("Y Displacement", m_gyro.getDisplacementY());
+    SmartDashboard.putNumber("Z Displacement", m_gyro.getDisplacementZ());
   }
 
   // public void rotateByAngle(double degrees, boolean isClockwise)
