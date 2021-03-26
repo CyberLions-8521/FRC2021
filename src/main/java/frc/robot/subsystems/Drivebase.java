@@ -27,7 +27,7 @@ public class Drivebase extends SubsystemBase {
   String driveMode = "Drive Mode";
 
   // Filter thing pew pew pew
-  SlewRateLimiter filter = new SlewRateLimiter(Constants.DriveConstants.RATE_LIMIT);
+  SlewRateLimiter filter = new SlewRateLimiter(5.0);
 
   // Motors
   CANSparkMax m_leftMaster = new CANSparkMax(Constants.CAN.kLeftMaster, MotorType.kBrushed);
@@ -59,7 +59,7 @@ public class Drivebase extends SubsystemBase {
     m_rightMaster.setInverted(false);    
 
     // If we want to set max output
-    m_drive.setMaxOutput(0.5);
+    m_drive.setMaxOutput(0.9);
   }
 
   @Override
@@ -122,21 +122,38 @@ public class Drivebase extends SubsystemBase {
         m_drive.tankDrive(leftSpeed, rightSpeed, false);
         break;
       case ARCADE:
-        double speed = filter.calculate(controller.getRawAxis(XBOX.LEFT_STICK_Y) * DriveConstants.MAX_OUTPUT);
-        double turnRate = filter.calculate(controller.getRawAxis(XBOX.RIGHT_STICK_X) * DriveConstants.MAX_OUTPUT);
-        
+        // double speed = filter.calculate(controller.getRawAxis(XBOX.LEFT_STICK_Y) * DriveConstants.MAX_OUTPUT);
+        // double turnRate = filter.calculate(controller.getRawAxis(XBOX.RIGHT_STICK_X) * DriveConstants.MAX_OUTPUT);
+        double speed = controller.getRawAxis(XBOX.LEFT_STICK_Y) * DriveConstants.MAX_OUTPUT;
+        double turnRate = controller.getRawAxis(XBOX.RIGHT_STICK_X) * DriveConstants.MAX_OUTPUT;
         // Experimental: using LR triggers to increase/reduce speed
         // Decrease speed when right trigger pressed, increase speed when right button pressed
-        if (controller.getRawButton(XBOX.RIGHT_TRIGGER)) turnRate *= DriveConstants.MAX_OUTPUT;
-        else if (controller.getRawButton(XBOX.RB)) turnRate /= DriveConstants.MAX_OUTPUT;
+        if (controller.getRawAxis(XBOX.RIGHT_TRIGGER) > 0) turnRate *= DriveConstants.MAX_OUTPUT;
+        else if (controller.getRawButton(XBOX.RB)) 
+        {
+          turnRate /= Math.min(turnRate/DriveConstants.MAX_OUTPUT, DriveConstants.MAX_OUTPUT);
+        }
 
-        if (controller.getRawButton(XBOX.LEFT_TRIGGER)) speed *= DriveConstants.MAX_OUTPUT;
-        else if (controller.getRawButton(XBOX.LB)) speed /= DriveConstants.MAX_OUTPUT;
+        if (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0) speed *= DriveConstants.MAX_OUTPUT;
+        else if (controller.getRawButton(XBOX.LB))
+        {
+          speed = Math.min(speed/DriveConstants.MAX_OUTPUT, DriveConstants.MAX_OUTPUT);
+        }
         //
+
+        if (controller.getRawButton(XBOX.LOGO_RIGHT))
+        {
+          speed = filter.calculate(speed);
+          turnRate = filter.calculate(speed);
+        }
+
         m_drive.arcadeDrive(speed, -turnRate, true);
 
         SmartDashboard.putNumber("Speed", speed);
         SmartDashboard.putNumber("Turn Rate", turnRate);
+        SmartDashboard.putNumber("X Displacement", m_gyro.getDisplacementX());
+        SmartDashboard.putNumber("Y Displacement", m_gyro.getDisplacementY());
+        SmartDashboard.putNumber("Z Displacement", m_gyro.getDisplacementZ());
         break;
     }
 
