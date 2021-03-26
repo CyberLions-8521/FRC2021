@@ -10,12 +10,7 @@ CANSparkMax m_leftMaster = new CANSparkMax(Constants.CAN.kLeftMaster, MotorType.
 
 
 public class intakesucc {
-    public static void main(String[] args)
-    {
-        //motor can statement here 
-
-    }
-
+   
     public void motorspeed()
     {
 
@@ -26,7 +21,6 @@ public class intakesucc {
     public void SuccAct()
     {
         //Toggle on/off for cim motor (Intake system)
-    } // change comit 
-//Change here 
+    }
     
 }
