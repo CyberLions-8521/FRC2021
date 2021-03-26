@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 public class Drivebase extends SubsystemBase {
   /** Creates a new Drivebase. */
@@ -43,6 +44,10 @@ public class Drivebase extends SubsystemBase {
 
   // Drive Mode
   public static DriveMode m_mode;
+
+  // Ultrasonic Sensor
+  private final AnalogInput ultrasonic = new AnalogInput(0);
+    // 0 = the Analog port number the sensor is connected to
 
   public Drivebase()
   {
@@ -173,5 +178,20 @@ public class Drivebase extends SubsystemBase {
   public AHRS getGyro()
   {
     return m_gyro;
+  }
+
+  public double getDistance() // from ultrasonic sensor
+  {
+    double rawValue = ultrasonic.getValue();
+    double currentDistance = rawValue * 0.125; // in cm
+    return currentDistance; // range, max=5m, min=30cm
+  }
+
+  public void stopMotor()
+  {
+    m_leftMaster.set(0);
+    m_rightMaster.set(0);
+    m_leftSlave.set(0);
+    m_rightSlave.set(0);
   }
 }

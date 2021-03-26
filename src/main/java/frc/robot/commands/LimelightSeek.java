@@ -94,9 +94,27 @@ public class LimelightSeek extends CommandBase {
   {
     // Speed at which the robot moves toward the ball
     double speed = 0.0;
+    
+    /*
     // The amount of space the ball takes up in the camera view
     double area = m_cam.getTa();  
     if (area < VisionConstants.BALL_AREA)
+    {
+      // Then move towards it slowly
+      speed = -DriveConstants.DRIVE_SLOW;
+      m_targetReached = false;
+      time = 0.0;
+    }
+    else
+    {
+      speed = 0.0;
+      m_targetReached = true;
+      time += 0.02;
+    }
+    */
+
+    double distance = m_db.getDistance();
+    if (distance > 40.0)  // 40 cm
     {
       // Then move towards it slowly
       speed = -DriveConstants.DRIVE_SLOW;
