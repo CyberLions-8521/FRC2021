@@ -57,8 +57,12 @@ public class Drivebase extends SubsystemBase {
 
     // Invert the motors
     m_leftMaster.setInverted(false);
-    m_rightMaster.setInverted(false);    
+    m_rightMaster.setInverted(false);
 
+    m_leftMaster.setOpenLoopRampRate(0.2);
+    m_rightMaster.setOpenLoopRampRate(0.2);
+    m_leftSlave.setOpenLoopRampRate(0.2);
+    m_rightSlave.setOpenLoopRampRate(0.2);
     // If we want to set max output
     m_drive.setMaxOutput(0.9);
   }

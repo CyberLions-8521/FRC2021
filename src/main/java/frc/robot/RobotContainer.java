@@ -49,6 +49,7 @@ public class RobotContainer {
 
   // Button Bindings
   // JoystickButton ButtonB;
+  CommandWriter test = new CommandWriter();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
