@@ -27,7 +27,8 @@ public class Drivebase extends SubsystemBase {
   String driveMode = "Drive Mode";
 
   // Filter thing pew pew pew
-  SlewRateLimiter filter = new SlewRateLimiter(5.0);
+  // trying a smaller value for the rate limit
+  SlewRateLimiter filter = new SlewRateLimiter(0.1);
 
   // Motors
   CANSparkMax m_leftMaster = new CANSparkMax(Constants.CAN.kLeftMaster, MotorType.kBrushed);
