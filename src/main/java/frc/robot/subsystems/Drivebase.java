@@ -136,13 +136,14 @@ public class Drivebase extends SubsystemBase {
         if (controller.getRawAxis(XBOX.RIGHT_TRIGGER) > 0) turnRate *= DriveConstants.MAX_OUTPUT;
         else if (controller.getRawButton(XBOX.RB)) 
         {
-          turnRate /= Math.min(turnRate/DriveConstants.MAX_OUTPUT, DriveConstants.MAX_OUTPUT);
+          turnRate /= Math.copySign(Math.min(turnRate/DriveConstants.MAX_OUTPUT, DriveConstants.MAX_OUTPUT), turnRate);
         }
 
         if (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0) speed *= DriveConstants.MAX_OUTPUT;
         else if (controller.getRawButton(XBOX.LB))
         {
-          speed = Math.min(speed/DriveConstants.MAX_OUTPUT, DriveConstants.MAX_OUTPUT);
+          speed = Math.copySign(Math.min(speed/DriveConstants.MAX_OUTPUT, DriveConstants.MAX_OUTPUT), speed);
+
         }
         //
 
