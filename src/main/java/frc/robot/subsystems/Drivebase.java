@@ -10,7 +10,10 @@ import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveMode;
+import frc.robot.Constants.XBOX;
+import frc.robot.commands.Drive;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -23,6 +26,8 @@ public class Drivebase extends SubsystemBase {
   // Descriptions
   String driveMode = "Drive Mode";
 
+  // Filter thing pew pew pew
+  SlewRateLimiter filter = new SlewRateLimiter(5.0);
 
   // Motors
   CANSparkMax m_leftMaster = new CANSparkMax(Constants.CAN.kLeftMaster, MotorType.kBrushed);
@@ -54,7 +59,7 @@ public class Drivebase extends SubsystemBase {
     m_rightMaster.setInverted(false);    
 
     // If we want to set max output
-    m_drive.setMaxOutput(0.5);
+    m_drive.setMaxOutput(0.9);
   }
 
   @Override
@@ -110,18 +115,45 @@ public class Drivebase extends SubsystemBase {
     {
       case TANK:
         // left speed, right speed, squared inputs
-        double leftSpeed = controller.getRawAxis(Constants.XBOX.LEFT_STICK_Y) * DriveConstants.MAX_OUTPUT;
-        double rightSpeed = controller.getRawAxis(Constants.XBOX.RIGHT_STICK_Y) * DriveConstants.MAX_OUTPUT;
+        double leftSpeed = controller.getRawAxis(XBOX.LEFT_STICK_Y) * DriveConstants.MAX_OUTPUT;
+        double rightSpeed = controller.getRawAxis(XBOX.RIGHT_STICK_Y) * DriveConstants.MAX_OUTPUT;
         SmartDashboard.putNumber("Left Speed", leftSpeed);
         SmartDashboard.putNumber("Right Speed", rightSpeed);
         m_drive.tankDrive(leftSpeed, rightSpeed, false);
         break;
       case ARCADE:
-        double speed = controller.getRawAxis(Constants.XBOX.LEFT_STICK_Y) * DriveConstants.MAX_OUTPUT;
-        double turnRate = controller.getRawAxis(Constants.XBOX.RIGHT_STICK_X) * DriveConstants.MAX_OUTPUT;
-        m_drive.arcadeDrive(speed, -turnRate, false);
+        // double speed = filter.calculate(controller.getRawAxis(XBOX.LEFT_STICK_Y) * DriveConstants.MAX_OUTPUT);
+        // double turnRate = filter.calculate(controller.getRawAxis(XBOX.RIGHT_STICK_X) * DriveConstants.MAX_OUTPUT);
+        double speed = controller.getRawAxis(XBOX.LEFT_STICK_Y) * DriveConstants.MAX_OUTPUT;
+        double turnRate = controller.getRawAxis(XBOX.RIGHT_STICK_X) * DriveConstants.MAX_OUTPUT;
+        // Experimental: using LR triggers to increase/reduce speed
+        // Decrease speed when right trigger pressed, increase speed when right button pressed
+        if (controller.getRawAxis(XBOX.RIGHT_TRIGGER) > 0) turnRate *= DriveConstants.MAX_OUTPUT;
+        else if (controller.getRawButton(XBOX.RB)) 
+        {
+          turnRate /= Math.min(turnRate/DriveConstants.MAX_OUTPUT, DriveConstants.MAX_OUTPUT);
+        }
+
+        if (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0) speed *= DriveConstants.MAX_OUTPUT;
+        else if (controller.getRawButton(XBOX.LB))
+        {
+          speed = Math.min(speed/DriveConstants.MAX_OUTPUT, DriveConstants.MAX_OUTPUT);
+        }
+        //
+
+        if (controller.getRawButton(XBOX.LOGO_RIGHT))
+        {
+          speed = filter.calculate(speed);
+          turnRate = filter.calculate(speed);
+        }
+
+        m_drive.arcadeDrive(speed, -turnRate, true);
+
         SmartDashboard.putNumber("Speed", speed);
         SmartDashboard.putNumber("Turn Rate", turnRate);
+        SmartDashboard.putNumber("X Displacement", m_gyro.getDisplacementX());
+        SmartDashboard.putNumber("Y Displacement", m_gyro.getDisplacementY());
+        SmartDashboard.putNumber("Z Displacement", m_gyro.getDisplacementZ());
         break;
     }
 

@@ -10,6 +10,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import java.io.File;
+import java.io.IOException;
 
 // https://docs.limelightvision.io/en/latest/networktables_api.html
 
@@ -20,8 +22,8 @@ public class Limelight extends SubsystemBase {
     ON, OFF
   }
 
-  LEDStatus m_LEDStatus;
-  boolean m_isOn;
+  LEDStatus m_LEDStatus = LEDStatus.OFF;
+  boolean m_isOn = false;
 
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTableEntry tx = table.getEntry("tx");
@@ -31,6 +33,17 @@ public class Limelight extends SubsystemBase {
 
   public Limelight()
   {
+    try 
+    {
+      File file = new File("newdirectory/helloworld.txt");
+      file.mkdirs();
+      file.createNewFile();
+      turnOffLED();
+    }
+    catch (IOException ex)
+    {
+      ex.printStackTrace();
+    }
     turnOffLED();
   }
 

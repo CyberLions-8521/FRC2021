@@ -25,6 +25,9 @@ public final class Constants
         public static final double TURN_SLOW = 0.5;
         // Steering adjust is never zero, so we choose a number where the robot is basically centered on the target
         public static final double STEER_THRESHOLD = 3;
+        // Constant for the slew rate limiter
+        // Limits the rate of change of a signal (joystick input) to 0.5 units per second
+        public static final double RATE_LIMIT = 0.5;
     }
 
     public static class VisionConstants
