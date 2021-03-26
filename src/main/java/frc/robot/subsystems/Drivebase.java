@@ -42,7 +42,9 @@ public class Drivebase extends SubsystemBase {
   public Drivebase()
   {
     // Default mode is tank drive
-    m_mode = DriveMode.TANK;
+    m_mode = DriveMode.ARCADE;
+
+    m_gyro.reset();
 
     m_leftSlave.follow(m_leftMaster);
     m_rightSlave.follow(m_rightMaster);
@@ -68,6 +70,11 @@ public class Drivebase extends SubsystemBase {
   public Rotation2d getHeading()
   {
     return Rotation2d.fromDegrees(-m_gyro.getAngle());
+  }
+
+  public double getAngle()
+  {
+    return m_gyro.getAngle();
   }
 
   public void turnInPlace(double adjust)
@@ -107,18 +114,32 @@ public class Drivebase extends SubsystemBase {
         double rightSpeed = controller.getRawAxis(Constants.XBOX.RIGHT_STICK_Y) * DriveConstants.MAX_OUTPUT;
         SmartDashboard.putNumber("Left Speed", leftSpeed);
         SmartDashboard.putNumber("Right Speed", rightSpeed);
-        m_drive.tankDrive(leftSpeed, rightSpeed, true);
+        m_drive.tankDrive(leftSpeed, rightSpeed, false);
         break;
       case ARCADE:
         double speed = controller.getRawAxis(Constants.XBOX.LEFT_STICK_Y) * DriveConstants.MAX_OUTPUT;
         double turnRate = controller.getRawAxis(Constants.XBOX.RIGHT_STICK_X) * DriveConstants.MAX_OUTPUT;
-        m_drive.arcadeDrive(speed, -turnRate, true);
+        m_drive.arcadeDrive(speed, -turnRate, false);
         SmartDashboard.putNumber("Speed", speed);
         SmartDashboard.putNumber("Turn Rate", turnRate);
         break;
     }
 
     // Display values to smart dashboard
-    SmartDashboard.putString("Drive Mode", driveMode);
+    SmartDashboard.putString("Arcade Drive", driveMode);
+  }
+
+  // public void rotateByAngle(double degrees, boolean isClockwise)
+  // {
+  //   if (isClockwise)
+  //     degrees = -degrees;
+    
+    
+  // }
+
+
+  public AHRS getGyro()
+  {
+    return m_gyro;
   }
 }

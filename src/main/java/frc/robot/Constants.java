@@ -18,18 +18,19 @@ public final class Constants
     public static class DriveConstants
     {
         // Just a coefficient to dampen how fast the robot turns
-        public static final double STEER_K = 0.03;
+        public static final double STEER_K = 0.1;
         // Highest the robot can turn autonomously
-        public static final double MAX_OUTPUT = 0.7;
+        public static final double MAX_OUTPUT = 0.5;
         public static final double DRIVE_SLOW = 0.4;
+        public static final double TURN_SLOW = 0.5;
         // Steering adjust is never zero, so we choose a number where the robot is basically centered on the target
-        public static final double STEER_THRESHOLD = 0.30;
+        public static final double STEER_THRESHOLD = 3;
     }
 
     public static class VisionConstants
     {
         // Area of the ball in the camera view when the robot stops approaching it
-        public static final double BALL_AREA = 1.0;
+        public static final double BALL_AREA = 2.1;
     }
 
     public static class CAN
