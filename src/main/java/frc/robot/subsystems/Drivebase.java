@@ -133,16 +133,16 @@ public class Drivebase extends SubsystemBase {
         double turnRate = controller.getRawAxis(XBOX.RIGHT_STICK_X) * DriveConstants.MAX_OUTPUT;
         // Experimental: using LR triggers to increase/reduce speed
         // Decrease speed when right trigger pressed, increase speed when right button pressed
-        if (controller.getRawAxis(XBOX.RIGHT_TRIGGER) > 0) turnRate *= DriveConstants.MAX_OUTPUT;
+        if (controller.getRawAxis(XBOX.RIGHT_TRIGGER) > 0) turnRate = Math.copySign(0.30, turnRate);
         else if (controller.getRawButton(XBOX.RB)) 
         {
-          turnRate /= Math.copySign(Math.min(turnRate/DriveConstants.MAX_OUTPUT, DriveConstants.MAX_OUTPUT), turnRate);
+          turnRate /= Math.min(turnRate/DriveConstants.MAX_OUTPUT, Math.copySign(DriveConstants.MAX_OUTPUT, turnRate));
         }
 
-        if (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0) speed *= DriveConstants.MAX_OUTPUT;
+        if (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0) speed = Math.copySign(0.30, speed);
         else if (controller.getRawButton(XBOX.LB))
         {
-          speed = Math.copySign(Math.min(speed/DriveConstants.MAX_OUTPUT, DriveConstants.MAX_OUTPUT), speed);
+          speed = Math.min(speed/DriveConstants.MAX_OUTPUT, Math.copySign(DriveConstants.MAX_OUTPUT, speed));
 
         }
         //
