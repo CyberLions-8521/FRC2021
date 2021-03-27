@@ -28,10 +28,11 @@ public class Drivebase extends SubsystemBase {
   /** Creates a new Drivebase. */
   // Descriptions
   String driveMode = "Drive Mode";
+  CommandWriter recorder;
 
   // Filter thing pew pew pew
   // trying a smaller value for the rate limit
-  SlewRateLimiter filter = new SlewRateLimiter(0.1);
+  SlewRateLimiter filter = new SlewRateLimiter(0.2);
 
   // Motors
   CANSparkMax m_leftMaster = new CANSparkMax(Constants.CAN.kLeftMaster, MotorType.kBrushed);
@@ -50,6 +51,7 @@ public class Drivebase extends SubsystemBase {
 
   public Drivebase()
   {
+    recorder = new CommandWriter();
     // Default mode is tank drive
     m_mode = DriveMode.ARCADE;
 
@@ -149,12 +151,12 @@ public class Drivebase extends SubsystemBase {
         {
           turnRate *= 0.30;
         }
-        // increase turn speed when right button pressed
+        // // increase turn speed when right button pressed
         else if (controller.getRawButton(XBOX.RB)) 
         {
-          turnRate = Math.min(turnRate/DriveConstants.MAX_OUTPUT, Math.copySign(DriveConstants.MAX_OUTPUT, turnRate));
+          turnRate /= 0.9;
         }
-        // decrease throttle
+        // // decrease throttle
         if (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0)
         {
           speed *= 0.30;
@@ -162,8 +164,9 @@ public class Drivebase extends SubsystemBase {
         // increase throttle
         else if (controller.getRawButton(XBOX.LB))
         {
-          speed = Math.min(speed/DriveConstants.MAX_OUTPUT, Math.copySign(DriveConstants.MAX_OUTPUT, speed));
-
+          speed /= 0.9;
+          // speed = Math.min(speed/DriveConstants.MAX_OUTPUT, Math.copySign(DriveConstants.MAX_OUTPUT, speed));
+          // SmartDashboard.putNumber("LB Speed", speed);
         }
 
         // apply filter
@@ -174,27 +177,46 @@ public class Drivebase extends SubsystemBase {
         }
 
         // write it idk
-        try
+        if (recorder.isReady())
         {
-          RobotContainer.recorder.writeDouble(speed);
-          RobotContainer.recorder.writeDouble(turnRate);
-        } catch (IOException e)
-        {
-          
+          try
+          {
+            recorder.writeDouble(speed);
+            recorder.writeDouble(turnRate);
+          } catch (IOException e)
+          {
+            
+          }
         }
+        speed = limitSpeed(speed);
         m_drive.arcadeDrive(speed, -turnRate, true);
 
-        if (controller.getXButton())
+        if (recorder.isReady() && controller.getXButton())
         {
-          RobotContainer.recorder.stopRecording();
+          recorder.stopRecording();
         }
-        SmartDashboard.putNumber("Speed", speed);
+        SmartDashboard.putNumber("Speed", -speed);
         SmartDashboard.putNumber("Turn Rate", turnRate);
         // SmartDashboard.putNumber("X Displacement", m_gyro.getDisplacementX());
         // SmartDashboard.putNumber("Y Displacement", m_gyro.getDisplacementY());
         // SmartDashboard.putNumber("Z Displacement", m_gyro.getDisplacementZ()); 
 
     // m_drive.arcadeDrive(throttle, turn);
+  }
+
+  public void autoArcade(double speed, double turn)
+  {
+    m_drive.arcadeDrive(speed, turn);
+  }
+
+  public double limitSpeed(double speed)
+  {
+    if (speed > 1.0)
+      speed = DriveConstants.MAX_OUTPUT;
+    else if (speed < -1.0)
+      speed = -DriveConstants.MAX_OUTPUT;
+    
+    return speed;
   }
 
 
