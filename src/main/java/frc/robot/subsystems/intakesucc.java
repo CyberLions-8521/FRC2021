@@ -37,12 +37,6 @@ public class Succ extends SubsystemBase {
       //If presssed again 
       kIntake.setPower(0);
     }
-
-
-
-
-
-
      
     /**
      * Cease ball intake
@@ -50,7 +44,7 @@ public class Succ extends SubsystemBase {
      */
     if (RobotContrainer.m_controller.getXButtonPressed())
     {
-      motorOn = !motorOff
+      motorOn = !motorOff;
       break;
 
     }
@@ -64,6 +58,17 @@ public class Succ extends SubsystemBase {
     // This method will be called once per scheduler run
 
     SmarttDashboard.putNumber("Intake Speed", intakeSPD);
+    if (RobotContainer.m_controller.getXButtonPressed())
+    {
+      switch (Succ)
+      {
+        case ON:
+          motorOn();
+          break;
+        case OFF:
+          motorOff();
+          break;
+      }
     
 
 
