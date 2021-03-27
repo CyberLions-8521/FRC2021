@@ -21,7 +21,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;
 
+
 public class Drivebase extends SubsystemBase {
+
+  
   /** Creates a new Drivebase. */
   // Descriptions
   String driveMode = "Drive Mode";
@@ -35,6 +38,9 @@ public class Drivebase extends SubsystemBase {
   CANSparkMax m_rightMaster = new CANSparkMax(Constants.CAN.kRightMaster, MotorType.kBrushed);
   CANSparkMax m_leftSlave = new CANSparkMax(Constants.CAN.kLeftSlave, MotorType.kBrushed);
   CANSparkMax m_rightSlave = new CANSparkMax(Constants.CAN.kRightSlave, MotorType.kBrushed);
+  
+  CANSparkMax kIntake = new CANSparkMax(Constants.CAN.kIntake, MotorType.kBrushed);
+
 
   // Differential drive class
   DifferentialDrive m_drive = new DifferentialDrive(m_leftMaster, m_rightMaster);
@@ -145,6 +151,7 @@ public class Drivebase extends SubsystemBase {
           speed = Math.min(speed/DriveConstants.MAX_OUTPUT, Math.copySign(DriveConstants.MAX_OUTPUT, speed));
 
         }
+        
         //
 
         if (controller.getRawButton(XBOX.LOGO_RIGHT))
@@ -152,6 +159,10 @@ public class Drivebase extends SubsystemBase {
           speed = filter.calculate(speed);
           turnRate = filter.calculate(speed);
         }
+
+    
+
+
 
         m_drive.arcadeDrive(speed, -turnRate, true);
 
