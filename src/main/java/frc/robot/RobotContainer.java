@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.io.File;
-import java.io.IOException;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -19,6 +17,7 @@ import frc.robot.commands.Drive;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.CommandWriter;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -49,7 +48,7 @@ public class RobotContainer {
 
   // Button Bindings
   // JoystickButton ButtonB;
-  CommandWriter test = new CommandWriter();
+  public static final CommandWriter recorder = new CommandWriter();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

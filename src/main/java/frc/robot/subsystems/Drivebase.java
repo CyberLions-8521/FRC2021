@@ -19,6 +19,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import java.io.IOException;
+
 import com.kauailabs.navx.frc.AHRS;
 
 public class Drivebase extends SubsystemBase {
@@ -153,8 +156,21 @@ public class Drivebase extends SubsystemBase {
           turnRate = filter.calculate(speed);
         }
 
+        // write it idk
+        try
+        {
+          RobotContainer.recorder.writeDouble(speed);
+          RobotContainer.recorder.writeDouble(turnRate);
+        } catch (IOException e)
+        {
+          
+        }
         m_drive.arcadeDrive(speed, -turnRate, true);
 
+        if (controller.getXButton())
+        {
+          RobotContainer.recorder.stopRecording();
+        }
         SmartDashboard.putNumber("Speed", speed);
         SmartDashboard.putNumber("Turn Rate", turnRate);
         SmartDashboard.putNumber("X Displacement", m_gyro.getDisplacementX());
