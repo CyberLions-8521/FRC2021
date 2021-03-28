@@ -194,42 +194,36 @@ public class Drivebase extends SubsystemBase {
 
   public void intakeWithController(XboxController controller)
   {
-    //Use the X button to switch IntakeOn and IntakeOff
+    //Use the X button to switch Intake steal or spit out ball
     if (RobotContainer.m_controller.getXButtonPressed())
     {
       if (s_intakeMode == DriveMode.XINTAKE0)
       {
         s_intakeMode = DriveMode.XINTAKE;
-        intakeMode = "Intake Mode";
+        intakeMode = "Intake Mode STEAL";
       }
       else if (s_intakeMode == DriveMode.XINTAKE)
       {
         s_intakeMode = DriveMode.XINTAKE0;
-        intakeMode = "Intake Mode Off";
+        intakeMode = "Intake Mode SPIT";
       }
     }
 
     switch (s_intakeMode)
     {
       case XINTAKE0:
-      //INTAKE IS ALWAYS ON Trying to steal ball
+      //INTAKE IS ALWAYS ON Trying to steal Ball
       double i_rightSpeed = DriveConstants.MAX_OUTPUT;
-      
-      SmartDashboard.putNumber("Right Speed", i_rightSpeed);
-      
       kIntake.set(0.5);
       //MAKE XINTAKE0 Take IN
-     
-      break;
-
+      SmartDashboard.putNumber("Right Speed", i_rightSpeed);
       
       case XINTAKE:
       //INTAKE TURNS ON MOTOR SET TO 0.5
-      kIntake.set(0.5);
-      //Makle XINTAKE Spit OUT
       double i_leftSpeed = DriveConstants.MAX_OUTPUT;
+      kIntake.set(0.5);
+      //Makle XINTAKE Spit OUT Ball
       SmartDashboard.putNumber("Left Speed", i_leftSpeed);
-      
       
     }
   }
