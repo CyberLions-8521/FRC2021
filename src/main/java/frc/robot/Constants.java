@@ -73,7 +73,7 @@ public final class Constants
 
     public enum DriveMode
     {
-        ARCADE, TANK
+        ARCADE, TANK , XINTAKE0 , XINTAKE ,
     }
 
 }

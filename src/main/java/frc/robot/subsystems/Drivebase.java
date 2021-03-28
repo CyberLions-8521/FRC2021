@@ -28,6 +28,7 @@ public class Drivebase extends SubsystemBase {
   /** Creates a new Drivebase. */
   // Descriptions
   String driveMode = "Drive Mode";
+  String intakeMode = "Intake Mode";
   
 
   // Filter thing pew pew pew
@@ -39,9 +40,9 @@ public class Drivebase extends SubsystemBase {
   CANSparkMax m_rightMaster = new CANSparkMax(Constants.CAN.kRightMaster, MotorType.kBrushed);
   CANSparkMax m_leftSlave = new CANSparkMax(Constants.CAN.kLeftSlave, MotorType.kBrushed);
   CANSparkMax m_rightSlave = new CANSparkMax(Constants.CAN.kRightSlave, MotorType.kBrushed);
-  
+  /**************************************************************/
   CANSparkMax kIntake = new CANSparkMax(Constants.CAN.kIntake, MotorType.kBrushed);
-
+  /**************************************************************/
 
   // Differential drive class
   DifferentialDrive m_drive = new DifferentialDrive(m_leftMaster, m_rightMaster);
@@ -180,40 +181,44 @@ public class Drivebase extends SubsystemBase {
     SmartDashboard.putString("Arcade Drive", driveMode);
   }
 
+  public void intakeMethod(XboxController controller)
+  {
+
+    //Default mode is XINTAKE0 (Off)
+    s_intakeMode = DriveMode.XINTAKE;
+
+  }
+
   public void intakeWithController(XboxController controller)
   {
+    //Use the X button to switch IntakeOn and IntakeOff
     if (RobotContainer.m_controller.getXButtonPressed())
-        {
-          int kIntakeOn = 1;
-          int kIntakeOff = 2;
-          
-          if (s_intake == DriveMode.kIntakeOn)
-          {
-            s_intakeMode = DriveMode.kIntakeOn;
-            driveMode = "Intake Systems On";
-          }
-          else if (Sintake == DriveMode.kIntakeOff)
-          {
-            Sintake = DriveMode.kIntakeOff;
-            driveMode = "Intake System Off";
-          }
-          
-          switch (kIntakeOn)
-          {
-            case 1:
-            double kIntake = controller.getRawAxis(XBOX.X) * DriveConstants.MAX_OUTPUT;
-            kIntake.set(5);
-          }
-          else if (RobotContainer.m_controller.getXButtonPressed())
-          {
-            case 2:
-            kIntake.set(0);
+    {
+      if (s_intakeMode == DriveMode.XINTAKE0)
+      {
+        s_intakeMode = DriveMode.XINTAKE;
+        intakeMode = "Intake Mode";
+      }
+      else if (s_intakeMode == DriveMode.XINTAKE)
+      {
+        s_intakeMode = DriveMode.XINTAKE0;
+        intakeMode = "Intake Mode Off";
+      }
+    }
 
-            
-            break;
-
-          }
+    switch (s_intakeMode)
+    {
+      case XINTAKE0:
+      //INTAKE IS OFF MOTOR SET TO 0
+      kIntake.set(0);
+      case XINTAKE:
+      //INTAKE TURNS ON MOTOR SET TO 0.5
+      kIntake.set(0.5);
+    }
   }
+
+  
+  
 
   // public void rotateByAngle(double degrees, boolean isClockwise)
   // {
