@@ -28,6 +28,7 @@ public class Drivebase extends SubsystemBase {
   /** Creates a new Drivebase. */
   // Descriptions
   String driveMode = "Drive Mode";
+  
 
   // Filter thing pew pew pew
   // trying a smaller value for the rate limit
@@ -50,6 +51,7 @@ public class Drivebase extends SubsystemBase {
 
   // Drive Mode
   public static DriveMode m_mode;
+  public static DriveMode s_intakeMode; //intake 
 
   public Drivebase()
   {
@@ -176,6 +178,41 @@ public class Drivebase extends SubsystemBase {
 
     // Display values to smart dashboard
     SmartDashboard.putString("Arcade Drive", driveMode);
+  }
+
+  public void intakeWithController(XboxController controller)
+  {
+    if (RobotContainer.m_controller.getXButtonPressed())
+        {
+          int kIntakeOn = 1;
+          int kIntakeOff = 2;
+          
+          if (s_intake == DriveMode.kIntakeOn)
+          {
+            s_intakeMode = DriveMode.kIntakeOn;
+            driveMode = "Intake Systems On";
+          }
+          else if (Sintake == DriveMode.kIntakeOff)
+          {
+            Sintake = DriveMode.kIntakeOff;
+            driveMode = "Intake System Off";
+          }
+          
+          switch (kIntakeOn)
+          {
+            case 1:
+            double kIntake = controller.getRawAxis(XBOX.X) * DriveConstants.MAX_OUTPUT;
+            kIntake.set(5);
+          }
+          else if (RobotContainer.m_controller.getXButtonPressed())
+          {
+            case 2:
+            kIntake.set(0);
+
+            
+            break;
+
+          }
   }
 
   // public void rotateByAngle(double degrees, boolean isClockwise)
