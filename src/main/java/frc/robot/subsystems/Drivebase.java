@@ -46,6 +46,7 @@ public class Drivebase extends SubsystemBase {
 
   // Differential drive class
   DifferentialDrive m_drive = new DifferentialDrive(m_leftMaster, m_rightMaster);
+  DifferentialDrive m_Intakedrive = new DifferentialDrive(m_leftMaster, m_rightMaster);
 
   // Gyro
   AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -100,6 +101,7 @@ public class Drivebase extends SubsystemBase {
   {
     // m_drive.arcadeDrive(0.0, adjust);
     m_drive.tankDrive(adjust, -adjust);
+    
   }
 
   public void moveForward(double speed)
@@ -186,6 +188,7 @@ public class Drivebase extends SubsystemBase {
 
     //Default mode is XINTAKE0 (Off)
     s_intakeMode = DriveMode.XINTAKE;
+    m_Intakedrive.setMaxOutput(0.6);
 
   }
 
@@ -209,11 +212,25 @@ public class Drivebase extends SubsystemBase {
     switch (s_intakeMode)
     {
       case XINTAKE0:
-      //INTAKE IS OFF MOTOR SET TO 0
-      kIntake.set(0);
+      //INTAKE IS ALWAYS ON Trying to steal ball
+      double i_rightSpeed = DriveConstants.MAX_OUTPUT;
+      
+      SmartDashboard.putNumber("Right Speed", i_rightSpeed);
+      
+      kIntake.set(0.5);
+      //MAKE XINTAKE0 Take IN
+     
+      break;
+
+      
       case XINTAKE:
       //INTAKE TURNS ON MOTOR SET TO 0.5
       kIntake.set(0.5);
+      //Makle XINTAKE Spit OUT
+      double i_leftSpeed = DriveConstants.MAX_OUTPUT;
+      SmartDashboard.putNumber("Left Speed", i_leftSpeed);
+      
+      
     }
   }
 
