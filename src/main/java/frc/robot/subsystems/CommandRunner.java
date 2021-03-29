@@ -23,7 +23,7 @@ public class CommandRunner
     {
         try
         {
-            fin = new BufferedReader(new FileReader(path));
+            fin = new BufferedReader(new FileReader("path"));
             success = true;
             line = fin.readLine();
             while (line != null)
