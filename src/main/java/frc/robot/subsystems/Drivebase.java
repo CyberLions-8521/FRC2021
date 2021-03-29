@@ -149,7 +149,7 @@ public class Drivebase extends SubsystemBase {
         // Decrease turn speed when right trigger pressed
         if (controller.getRawAxis(XBOX.RIGHT_TRIGGER) > 0) 
         {
-          turnRate *= 0.30;
+          turnRate *= turnRate;
         }
         // // increase turn speed when right button pressed
         else if (controller.getRawButton(XBOX.RB)) 
@@ -159,7 +159,7 @@ public class Drivebase extends SubsystemBase {
         // // decrease throttle
         if (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0)
         {
-          speed *= 0.30;
+          speed *= turnRate;
         }
         // increase throttle
         else if (controller.getRawButton(XBOX.LB))
@@ -189,7 +189,7 @@ public class Drivebase extends SubsystemBase {
           }
         }
         speed = limitSpeed(speed);
-        m_drive.arcadeDrive(speed, -turnRate, true);
+        m_drive.arcadeDrive(speed, -turnRate, false);
 
         if (recorder.isReady() && controller.getXButton())
         {
@@ -212,9 +212,11 @@ public class Drivebase extends SubsystemBase {
   public double limitSpeed(double speed)
   {
     if (speed > 1.0)
-      speed = DriveConstants.MAX_OUTPUT;
+      speed = 0.7;
+      // speed = DriveConstants.MAX_OUTPUT;
     else if (speed < -1.0)
-      speed = -DriveConstants.MAX_OUTPUT;
+      speed = -0.7;
+      // speed = -DriveConstants.MAX_OUTPUT;
     
     return speed;
   }
