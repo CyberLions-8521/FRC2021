@@ -28,7 +28,7 @@ public class Drivebase extends SubsystemBase {
   /** Creates a new Drivebase. */
   // Descriptions
   String driveMode = "Drive Mode";
-  String intakeMode = "Intake Mode";
+  
   
 
   // Filter thing pew pew pew
@@ -40,20 +40,18 @@ public class Drivebase extends SubsystemBase {
   CANSparkMax m_rightMaster = new CANSparkMax(Constants.CAN.kRightMaster, MotorType.kBrushed);
   CANSparkMax m_leftSlave = new CANSparkMax(Constants.CAN.kLeftSlave, MotorType.kBrushed);
   CANSparkMax m_rightSlave = new CANSparkMax(Constants.CAN.kRightSlave, MotorType.kBrushed);
-  /**************************************************************/
-  CANSparkMax kIntake = new CANSparkMax(Constants.CAN.kIntake, MotorType.kBrushed);
-  /**************************************************************/
+  
 
   // Differential drive class
   DifferentialDrive m_drive = new DifferentialDrive(m_leftMaster, m_rightMaster);
-  DifferentialDrive m_Intakedrive = new DifferentialDrive(m_leftMaster, m_rightMaster);
+  
 
   // Gyro
   AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
   // Drive Mode
   public static DriveMode m_mode;
-  public static DriveMode s_intakeMode; //intake 
+  
 
   public Drivebase()
   {
@@ -183,51 +181,9 @@ public class Drivebase extends SubsystemBase {
     SmartDashboard.putString("Arcade Drive", driveMode);
   }
 
-  public void intakeMethod(XboxController controller)
-  {
+  //........
 
-    //Default mode is XINTAKE0 (Off)
-    s_intakeMode = DriveMode.XINTAKE;
-    m_Intakedrive.setMaxOutput(0.6);
-
-  }
-
-  public void intakeWithController(XboxController controller)
-  {
-    //Use the X button to switch Intake steal or spit out ball
-    if (RobotContainer.m_controller.getXButtonPressed())
-    {
-      if (s_intakeMode == DriveMode.XINTAKE0)
-      {
-        s_intakeMode = DriveMode.XINTAKE;
-        intakeMode = "Intake Mode STEAL";
-      }
-      else if (s_intakeMode == DriveMode.XINTAKE)
-      {
-        s_intakeMode = DriveMode.XINTAKE0;
-        intakeMode = "Intake Mode SPIT";
-      }
-    }
-
-    switch (s_intakeMode)
-    {
-      case XINTAKE0:
-      //INTAKE IS ALWAYS ON Trying to steal Ball
-      double i_rightSpeed = DriveConstants.MAX_OUTPUT;
-      kIntake.set(0.5);
-      //MAKE XINTAKE0 Take IN
-      SmartDashboard.putNumber("Right Speed", i_rightSpeed);
-      
-      case XINTAKE:
-      //INTAKE TURNS ON MOTOR SET TO 0.5
-      double i_leftSpeed = DriveConstants.MAX_OUTPUT;
-      kIntake.set(0.5);
-      //Makle XINTAKE Spit OUT Ball
-      SmartDashboard.putNumber("Left Speed", i_leftSpeed);
-      
-    }
-  }
-
+  
   
   
 
