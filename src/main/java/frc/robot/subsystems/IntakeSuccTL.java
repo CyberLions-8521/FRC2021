@@ -56,7 +56,7 @@ public class IntakeSuccTL extends SubsystemBase
     public void intakeWitchController(XboxController controller)
     {
         //Use the X button to switch Intake Steal or Spit
-        if (RobotContainer.m_controller.getXButtonPressed())
+        if (RobotContainer.m_controller.getXButtonPressed()) // I think X button was already taken.
         {
             if (s_intakeMode == DriveMode.XINTAKE0)
             {
@@ -83,10 +83,12 @@ public class IntakeSuccTL extends SubsystemBase
             //SmartDashboard.putNumber("Right Speed", i_rightSpeed);
             case XINTAKE:
             //INTAKE TURNS ON MOTOR SET TO 0.5
-            double i_leftSpeed = DriveConstants.MAX_OUTPUT;
-            kIntake.set(0.5);
+            //double i_leftSpeed = DriveConstants.MAX_OUTPUT;
+            //kIntake.set(0.5);
             //Make XINTAKE Sit OUT Ball
             //SmartDashboard.putNumber("Left SPeed", i_leftSpeed);
+            
+         
         }
     }
 
