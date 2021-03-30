@@ -18,6 +18,7 @@ import frc.robot.Constants.XBOX;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.IntakeSuccTL; //Intake here
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -33,6 +34,7 @@ public class RobotContainer {
   // Subsystems
   private Drivebase m_drivebase = new Drivebase();
   private Limelight m_limelight = new Limelight();
+  private Intake m_intake = new intake(); //l
 
   // Commands
   private final Drive m_driveSystem = new Drive(m_drivebase);
@@ -60,7 +62,7 @@ public class RobotContainer {
     m_chooser.addOption("Find ball", seek);
     SmartDashboard.putData(m_chooser);
     // Configure the button bindings
-    // ButtonB = new JoystickButton(m_controller, XBOX.B);
+    ButtonB = new JoystickButton(m_controller, XBOX.B); //INtake here awdawwd
     configureButtonBindings();
   }
 
@@ -96,6 +98,8 @@ public class RobotContainer {
       default:
         m_command = (new LimelightSeek(m_drivebase, m_limelight));
         break; 
+        case intake: 
+        m_command = (new Intake)
     }
 
     return m_command;
