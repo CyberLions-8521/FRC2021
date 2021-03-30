@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.LimelightSeek;
 import frc.robot.commands.RotateCommand;
+import frc.robot.commands.IntakeTL; //intake command here 
 // import frc.robot.commands.Rotate90;
 import frc.robot.Constants.XBOX;
 import frc.robot.commands.Drive;
-import frc.robot.commands.IntakeTL;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.IntakeSuccTL; //Intake here
@@ -35,7 +35,7 @@ public class RobotContainer {
   // Subsystems
   private Drivebase m_drivebase = new Drivebase();
   private Limelight m_limelight = new Limelight();
-  private IntakeSuccTL m_intake = new IntakeSuccTL(); //l
+  private IntakeSuccTL m_intake = new IntakeSuccTL();
 
   // Commands
   private final Drive m_driveSystem = new Drive(m_drivebase);
@@ -49,6 +49,7 @@ public class RobotContainer {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final String rotate = "rotate";
   private final String seek = "seek";
+  private final String Xintake = "Intake";
 
   // Button Bindings
   // JoystickButton ButtonB;
@@ -63,7 +64,7 @@ public class RobotContainer {
     m_chooser.addOption("Find ball", seek);
     SmartDashboard.putData(m_chooser);
     // Configure the button bindings
-    ButtonB = new JoystickButton(m_controller, XBOX.B); //INtake here awdawwd
+    //ButtonB = new JoystickButton(m_controller, XBOX.B); 
     configureButtonBindings();
   }
 
@@ -99,9 +100,9 @@ public class RobotContainer {
       default:
         m_command = (new LimelightSeek(m_drivebase, m_limelight));
         break; 
-        case IntakeSuccTL: 
-        m_command = (new IntakeTL(m_drivebase, m_intake));
-        break;
+      case Xintake: 
+       m_command = (new IntakeTL(m_intake));
+       break;
     }
 
     return m_command;

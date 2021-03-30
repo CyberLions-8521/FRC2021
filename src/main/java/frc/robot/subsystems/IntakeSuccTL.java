@@ -25,7 +25,7 @@ import frc.robot.Constants.DriveMode;
 
 
 
-
+//Check if ready (Done) - Thien
 
 
 public class IntakeSuccTL extends SubsystemBase 
@@ -63,37 +63,38 @@ public class IntakeSuccTL extends SubsystemBase
     @Override
     public void periodic() 
     {
-        //Method called when Program Runs or executed
-
-        if (RobotContainer.m_controller.getBButtonPressed())
+        // //Method called when Program Runs or executed
+        // if (RobotContainer.m_controller.getBButtonPressed())
+        // {
+        //     switch (m_IntakeX)
+        //     {
+                
+        //         case IntakeOn:
+        //         kMotorOn();
+    
+                
+        //         case IntakeOff:
+        //         kMotorOff();
+        //     }
+        // }
+    }
+    public void IntakeWithController(XboxController controller)
+    {
+        //Press B to turn on or off intake.
+        if (RobotContainer.m_controller.getBButtonPressed()) // I think X button was already taken.
         {
             switch (m_IntakeX)
             {
-                
                 case IntakeOn:
                 kMotorOn();
-    
-                
                 case IntakeOff:
                 kMotorOff();
-            }
-        }
-    }
-    // public void intakeWitchController(XboxController controller)
-    // {
-    //     //Press B to turn on or off intake.
-    //     if (RobotContainer.m_controller.getBButtonPressed()) // I think X button was already taken.
-    //     {
-    //         switch (intakeModeX)
-    //         {
-    //             case IntakeOn:
-    //             case IntakeOff:
 
-    //         }
-    //         kIntake.set(0.5);
-    //     }
+            }
+            
+        }
         
-    // }
+    }
 
 
 

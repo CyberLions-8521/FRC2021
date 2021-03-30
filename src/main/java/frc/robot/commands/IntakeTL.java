@@ -9,13 +9,8 @@ import frc.robot.subsystems.IntakeSuccTL;
 public class IntakeTL extends CommandBase 
 {
     private final IntakeSuccTL m_IntakeZero;
+    //fix above
     
-
-
-   
-
-
-
 
     //Command is called when initially scheduled
     @Override
@@ -25,8 +20,7 @@ public class IntakeTL extends CommandBase
     public void execute()
     {
         //Command here will execute turning on motor on or off 
-        m_IntakeZero.driveWithController(RobotContainer.m_controller); // change this up to a button on and off not drive
-
+        m_IntakeZero.IntakeWithController(RobotContainer.m_controller); // change this up to a button on and off not drive
 
     }
 
