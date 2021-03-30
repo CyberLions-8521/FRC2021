@@ -27,24 +27,73 @@ import frc.robot.Constants.DriveConstants;
 
 
 
+
 public class IntakeSuccTL extends SubsystemBase 
 {
-    String intakeMode = "Intake Mode";
+   
+
+    enum intakeModeX
+    {
+        IntakeOn, IntakeOff
+    }
+
+    intakeModeX m_IntakeX = intakeModeX.IntakeOff;
 
     //Intake Motor
     /**************************************************************/
     CANSparkMax kIntake = new CANSparkMax(Constants.CAN.kIntake, MotorType.kBrushed);
     /**************************************************************/
 
-    public void intakeWitchController(XboxController controller)
+
+    public void kMotorOn()
     {
-        //Press B to turn on or off intake.
-        if (RobotContainer.m_controller.getBButtonPressed()) // I think X button was already taken.
-        {
-            kIntake.set(0.5);
-        }
-        
+        m_IntakeX = IntakeModeX.IntakeON;
+        m_IntakeX.set(0.5);
     }
+
+    public void kMotorOff()
+    {
+        m_IntakeX = intakeModeX.IntakeOff;
+        m_IntakeX.set(0);
+        //help on set motor?
+    }
+
+
+
+    @Override
+    public void periodic() 
+    {
+        //Method called when Program Runs or executed
+
+        if (RobotContainer.m_controller.getBButtonPressed())
+        {
+            switch (m_IntakeX)
+            {
+                
+                case IntakeOn:
+                kMotorOn();
+    
+                
+                case IntakeOff:
+                kMotorOff();
+            }
+        }
+    }
+    // public void intakeWitchController(XboxController controller)
+    // {
+    //     //Press B to turn on or off intake.
+    //     if (RobotContainer.m_controller.getBButtonPressed()) // I think X button was already taken.
+    //     {
+    //         switch (intakeModeX)
+    //         {
+    //             case IntakeOn:
+    //             case IntakeOff:
+
+    //         }
+    //         kIntake.set(0.5);
+    //     }
+        
+    // }
 
 
 

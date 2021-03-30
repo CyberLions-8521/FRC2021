@@ -16,6 +16,7 @@ import frc.robot.commands.RotateCommand;
 // import frc.robot.commands.Rotate90;
 import frc.robot.Constants.XBOX;
 import frc.robot.commands.Drive;
+import frc.robot.commands.IntakeTL;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.IntakeSuccTL; //Intake here
@@ -34,7 +35,7 @@ public class RobotContainer {
   // Subsystems
   private Drivebase m_drivebase = new Drivebase();
   private Limelight m_limelight = new Limelight();
-  private Intake m_intake = new intake(); //l
+  private IntakeSuccTL m_intake = new IntakeSuccTL(); //l
 
   // Commands
   private final Drive m_driveSystem = new Drive(m_drivebase);
@@ -98,8 +99,9 @@ public class RobotContainer {
       default:
         m_command = (new LimelightSeek(m_drivebase, m_limelight));
         break; 
-        case intake: 
-        m_command = (new Intake)
+        case IntakeSuccTL: 
+        m_command = (new IntakeTL(m_drivebase, m_intake));
+        break;
     }
 
     return m_command;
