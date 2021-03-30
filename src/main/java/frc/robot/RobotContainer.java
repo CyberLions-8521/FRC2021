@@ -101,8 +101,8 @@ public class RobotContainer {
         m_command = (new LimelightSeek(m_drivebase, m_limelight));
         break; 
       case Xintake: 
-       m_command = (new IntakeTL(m_intake));
-       break;
+        m_command = (new IntakeTL(m_intake));
+        break;
     }
 
     return m_command;

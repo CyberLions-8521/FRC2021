@@ -10,6 +10,12 @@ public class IntakeTL extends CommandBase
 {
     private final IntakeSuccTL m_IntakeZero;
     //fix above
+    public IntakeTL(IntakeSuccTL intakePls)
+    {
+        m_IntakeZero = intakePls;
+        
+        addRequirements(intakePls);
+    }
     
 
     //Command is called when initially scheduled
