@@ -1,4 +1,10 @@
-// package frc.robot.subsystems;
+package frc.robot.subsystems;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.RobotContainer;
 
 
 // CANSparkMax m_leftMaster = new CANSparkMax(Constants.CAN.kLeftMaster, MotorType.kBrushed);
@@ -6,27 +12,29 @@
 //   CANSparkMax m_leftSlave = new CANSparkMax(Constants.CAN.kLeftSlave, MotorType.kBrushed);
 //   CANSparkMax m_rightSlave = new CANSparkMax(Constants.CAN.kRightSlave, MotorType.kBrushed);
 
-//   //rename brush type (Change motor name)
+  //rename brush type (Change motor name)
 
 
-// public class intakesucc {
-//     public static void main(String[] args)
-//     {
-//         //motor can statement here 
+public class intakesucc extends SubsystemBase{
+    // public static void main(String[] args)
+    // {
+    //     //motor can statement here 
 
-//     }
+    // }
 
-//     public void motorspeed()
-//     {
+    DoubleSolenoid m_intakeSolenoid = null;
 
-//         /intake acceleration
-//     }
+    public void motorSpeed()
+    {
+
+        //intake acceleration
+    }
 
 
-//     public void SuccAct()
-//     {
-//         //Toggle on/off for cim motor (Intake system)
-//     } // change comit 
-// //Change here 
+    public void succAct()
+    {
+        //Toggle on/off for cim motor (Intake system)
+    } // change comit 
+//Change here 
     
-// }
+}
