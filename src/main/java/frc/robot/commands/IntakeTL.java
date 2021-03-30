@@ -2,12 +2,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.IntakeSuccTL;
 
 //This class is used to control Intake On and Off via XBOX Controller
 
 public class IntakeTL extends CommandBase 
 {
-    private final IntakeForm m_IntakeZero;
+    private final IntakeSuccTL m_IntakeZero;
     
 
 

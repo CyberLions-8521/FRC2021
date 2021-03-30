@@ -5,7 +5,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.DriveMode;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -18,6 +17,7 @@ import frc.robot.Constants.XBOX;
 import frc.robot.commands.Drive;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.DriveMode;
 */
 
 
@@ -47,14 +47,14 @@ public class IntakeSuccTL extends SubsystemBase
 
     public void kMotorOn()
     {
-        m_IntakeX = IntakeModeX.IntakeON;
-        m_IntakeX.set(0.5);
+        m_IntakeX = intakeModeX.IntakeOn;
+        kIntake.set(0.5);
     }
 
     public void kMotorOff()
     {
         m_IntakeX = intakeModeX.IntakeOff;
-        m_IntakeX.set(0);
+        kIntake.set(0);
         //help on set motor?
     }
 
