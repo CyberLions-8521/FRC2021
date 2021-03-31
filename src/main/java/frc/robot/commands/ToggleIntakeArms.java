@@ -24,11 +24,11 @@ public class ToggleIntakeArms extends CommandBase {
   {
     if (m_intake.isExtended())
     {
-      m_intake.retractArm();
+      m_intake.retractArms();
     }
     else
     {
-      m_intake.extendArm();
+      m_intake.extendArms();
     }
     isDone = true;
   }

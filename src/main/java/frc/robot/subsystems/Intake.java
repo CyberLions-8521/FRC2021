@@ -14,15 +14,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   CANSparkMax m_IntakeMotor = new CANSparkMax(Constants.CAN.kIntake, MotorType.kBrushed);
-  // Not sure if these are the right numbers-- they probably aren't
-  DoubleSolenoid m_ds = new DoubleSolenoid(1, 2);
+
+  DoubleSolenoid m_leftDS = new DoubleSolenoid(4, 5);
+  DoubleSolenoid m_rightDS = new DoubleSolenoid(0, 1);
 
   boolean m_isExtended;
   boolean m_isOn;
 
   public Intake()
   {
-    retractArm();
+    retractArms();
     stopSucc();
   }
 
@@ -36,15 +37,17 @@ public class Intake extends SubsystemBase {
     return m_isOn;
   }
 
-  public void extendArm()
+  public void extendArms()
   {
-    m_ds.set(Value.kForward);
+    m_leftDS.set(Value.kForward);
+    m_rightDS.set(Value.kForward);
     m_isExtended = true;
   }
 
-  public void retractArm()
+  public void retractArms()
   {
-    m_ds.set(Value.kReverse);
+    m_leftDS.set(Value.kReverse);
+    m_rightDS.set(Value.kReverse);
     m_isExtended = false;
   }
 
