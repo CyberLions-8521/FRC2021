@@ -176,8 +176,12 @@ public class Drivebase extends SubsystemBase {
         // write it idk
         try
         {
-          RobotContainer.recorder.writeDouble(speed);
-          RobotContainer.recorder.writeDouble(turnRate);
+          // Testing to see what would happen if i wrote it multiple times lol
+          for (int i=0; i<2; i++)
+          {
+            RobotContainer.recorder.writeDouble(speed);
+            RobotContainer.recorder.writeDouble(turnRate);
+          }
         } catch (IOException e)
         {
           
