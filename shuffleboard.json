@@ -212,6 +212,17 @@
               "_source0": "network_table:///SmartDashboard/Steering Adjust",
               "_title": "Steering Adjust"
             }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
+              "_title": "SendableChooser[0]"
+            }
           }
         }
       }
@@ -273,9 +284,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -6.400000095367432,
-    "y": -6.400000095367432,
-    "width": 1292.800048828125,
-    "height": 692.7999877929688
+    "x": 390.0,
+    "y": 0.0,
+    "width": 894.7999877929688,
+    "height": 544.4000244140625
   }
 }
