@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
-import java.io.FileWriter;
+// import java.io.FileWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 // import frc.robot.subsystems.Drivebase;
 // import the robot
@@ -8,16 +10,23 @@ import java.io.IOException;
  */
 public class CommandWriter
 {
+    File file;
+    FileOutputStream fout;
     private String mPath;
-    FileWriter fout;
+    // FileWriter fout;
+
     boolean success;
     // Default constructor
     public CommandWriter()
     {
       try
       {
-        mPath = "/home/lvuser/autonomousmacros/test.txt";
-        fout = new FileWriter(mPath);
+        mPath = "/home/lvuser/test.txt";
+        file = new File(mPath);
+        file.createNewFile();
+        fout = new FileOutputStream(file, false);
+        // String content = "cow\n";
+        // fout.write(content.getBytes());
         success = true;
       }
       catch (IOException e)
@@ -35,7 +44,10 @@ public class CommandWriter
     {
       if (isReady())
       {
-        fout.append(""+ value + "\n");
+        String content = ""+ value + "\n";
+        fout.write(content.getBytes());
+        // fout.flush();
+        // fout.close();
       }
     }
 

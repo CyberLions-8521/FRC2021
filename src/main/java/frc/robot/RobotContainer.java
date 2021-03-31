@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.LimelightSeek;
 import frc.robot.commands.RotateCommand;
+import frc.robot.commands.SpookyAuto;
 // import frc.robot.commands.Rotate90;
 import frc.robot.Constants.XBOX;
 import frc.robot.commands.Drive;
@@ -46,9 +47,10 @@ public class RobotContainer {
   private final String rotate = "rotate";
   private final String seek = "seek";
 
+  private final SpookyAuto mTest = new SpookyAuto(m_drivebase);
   // Button Bindings
   // JoystickButton ButtonB;
-  public static final CommandWriter recorder = new CommandWriter();
+  // public static final CommandWriter recorder = new CommandWriter();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -60,7 +62,7 @@ public class RobotContainer {
     SmartDashboard.putData(m_chooser);
     // Configure the button bindings
     // ButtonB = new JoystickButton(m_controller, XBOX.B);
-    configureButtonBindings();
+    configureButtonBindings(); //ll
   }
 
   /**
@@ -71,7 +73,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings()
   {
-    // ButtonB.whenPressed(new Rotate90(m_drivebase));
+    // ButtonB.whenPressed(new Rotate90(m_drivebase)); /
   }
 
   /**
@@ -81,22 +83,22 @@ public class RobotContainer {
    */
   // https://github.com/Cyberheart6009/FRC-2020-Robot/blob/master/src/main/java/frc/robot/RobotContainer.java
   public Command getAutonomousCommand() {
-    String m_selected = m_chooser.getSelected();
-    Command m_command;
+    // String m_selected = m_chooser.getSelected();
+    // Command m_command;
 
-    switch (m_selected)
-    {
-      case rotate:
-        m_command = (new RotateCommand(m_drivebase));
-        break;
-      case seek:
-        m_command = (new LimelightSeek(m_drivebase, m_limelight));
-        break;
-      default:
-        m_command = (new LimelightSeek(m_drivebase, m_limelight));
-        break; 
-    }
+    // switch (m_selected)
+    // {
+    //   case rotate:
+    //     m_command = (new RotateCommand(m_drivebase));
+    //     break;
+    //   case seek:
+    //     m_command = (new LimelightSeek(m_drivebase, m_limelight));
+    //     break;
+    //   default:
+    //     m_command = (new LimelightSeek(m_drivebase, m_limelight));
+    //     break; 
+    // }
 
-    return m_command;
+    return new SpookyAuto(m_drivebase);
   }
 }
