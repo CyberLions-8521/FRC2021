@@ -1,12 +1,16 @@
 package frc.robot.subsystems;
 
 
+import java.nio.channels.Channel;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 
 /*
@@ -30,7 +34,6 @@ import frc.robot.Constants.DriveMode;
 
 public class IntakeSuccTL extends SubsystemBase 
 {
-   
 
     enum intakeModeX
     {
@@ -42,8 +45,7 @@ public class IntakeSuccTL extends SubsystemBase
     //Intake Motor
     /**************************************************************/
     CANSparkMax kIntake = new CANSparkMax(Constants.CAN.kIntake, MotorType.kBrushed);
-    /**************************************************************/
-
+    
 
     public void kMotorOn()
     {
@@ -55,6 +57,7 @@ public class IntakeSuccTL extends SubsystemBase
     {
         m_IntakeX = intakeModeX.IntakeOff;
         kIntake.set(0);
+
         //help on set motor?
     }
 
@@ -95,14 +98,4 @@ public class IntakeSuccTL extends SubsystemBase
         }
         
     }
-
-
-
-
-    
-
-
-
-
-
 }
