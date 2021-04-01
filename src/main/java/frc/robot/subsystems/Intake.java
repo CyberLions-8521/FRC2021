@@ -8,7 +8,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -18,18 +20,40 @@ public class Intake extends SubsystemBase {
   DoubleSolenoid m_leftDS = new DoubleSolenoid(4, 5);
   DoubleSolenoid m_rightDS = new DoubleSolenoid(0, 1);
 
+  Compressor m_compressor = new Compressor();
   boolean m_isExtended;
   boolean m_isOn;
 
+  boolean compOn;
+
   public Intake()
   {
-    retractArms();
-    stopSucc();
+    // retractArms();
+    // stopSucc();
   }
+
 
   public boolean isExtended()
   {
     return m_isExtended;
+  }
+
+  
+  public void toggleCompressor(XboxController m_controller)
+  {
+    if (m_controller.getBButton())
+    {
+      if (m_compressor.enabled() && !compOn)
+      {
+        compOn = false;
+        m_compressor.stop();
+      }
+      else if (!compOn && !m_compressor.enabled())
+      {
+        compOn = true;
+        m_compressor.start();
+      }
+    }
   }
 
   public boolean isOn()
