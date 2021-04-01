@@ -17,7 +17,7 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   CANSparkMax m_IntakeMotor = new CANSparkMax(Constants.CAN.kIntake, MotorType.kBrushed);
 
-  DoubleSolenoid m_leftDS = new DoubleSolenoid(4, 5);
+  DoubleSolenoid m_leftDS = new DoubleSolenoid(5, 4);
   DoubleSolenoid m_rightDS = new DoubleSolenoid(0, 1);
 
   Compressor m_compressor = new Compressor();
@@ -28,8 +28,8 @@ public class Intake extends SubsystemBase {
 
   public Intake()
   {
-    // retractArms();
-    // stopSucc();
+    retractArms();
+    stopSucc();
   }
 
 
@@ -41,7 +41,7 @@ public class Intake extends SubsystemBase {
   
   public void toggleCompressor(XboxController m_controller)
   {
-    if (m_controller.getBButton())
+    if (m_controller.getAButtonPressed())
     {
       if (m_compressor.enabled() && !compOn)
       {

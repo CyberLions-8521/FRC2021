@@ -62,7 +62,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_drivebase.setDefaultCommand(m_driveSystem);
+    // m_drivebase.setDefaultCommand(m_driveSystem);
     m_intake.setDefaultCommand(ctest);
     // m_limelight.turnOffLED();
     // SendableChooser stuff
@@ -97,22 +97,22 @@ public class RobotContainer {
    */
   // https://github.com/Cyberheart6009/FRC-2020-Robot/blob/master/src/main/java/frc/robot/RobotContainer.java
   public Command getAutonomousCommand() {
-    String m_selected = m_chooser.getSelected();
-    Command m_command;
+    // String m_selected = m_chooser.getSelected();
+    // Command m_command;
 
-    switch (m_selected)
-    {
-      case rotate:
-        m_command = (new RotateCommand(m_drivebase));
-        break;
-      case seek:
-        m_command = (new LimelightSeek(m_drivebase, m_limelight));
-        break;
-      default:
-        m_command = (new LimelightSeek(m_drivebase, m_limelight));
-        break; 
-    }
+    // switch (m_selected)
+    // {
+    //   case rotate:
+    //     m_command = (new RotateCommand(m_drivebase));
+    //     break;
+    //   case seek:
+    //     m_command = (new LimelightSeek(m_drivebase, m_limelight));
+    //     break;
+    //   default:
+    //     m_command = (new LimelightSeek(m_drivebase, m_limelight));
+    //     break; 
+    // }
 
-    return m_command;
+    return new ToggleIntakeArms(m_intake);
   }
 }

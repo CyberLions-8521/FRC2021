@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 
 public class ToggleIntakeArms extends CommandBase {
@@ -22,22 +24,25 @@ public class ToggleIntakeArms extends CommandBase {
   @Override
   public void initialize()
   {
-    if (m_intake.isExtended())
-    {
-      m_intake.retractArms();
-    }
-    else
-    {
-      m_intake.extendArms();
-    }
+    m_intake.retractArms();
+    // m_intake.extendArms();
     isDone = true;
+    // if (m_intake.isExtended())
+    // {
+    //   m_intake.retractArms();
+    // }
+    // else
+    // {
+    //   m_intake.extendArms();
+    // }
+    // isDone = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-
+    // m_intake.toggleIntake(RobotContainer.m_controller);
   }
 
   // Called once the command ends or is interrupted.
