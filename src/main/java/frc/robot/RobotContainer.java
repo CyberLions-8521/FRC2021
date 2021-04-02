@@ -12,13 +12,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.LimelightSeek;
 import frc.robot.commands.RotateCommand;
 import frc.robot.commands.SpookyAuto;
+import frc.robot.commands.ToggleIntakeArms;
+import frc.robot.commands.ToggleIntakeMotor;
 // import frc.robot.commands.Rotate90;
 import frc.robot.Constants.XBOX;
+import frc.robot.commands.CompressorControl;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.Drivebase;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandWriter;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -33,9 +39,11 @@ public class RobotContainer {
   // Subsystems
   private Drivebase m_drivebase = new Drivebase();
   private Limelight m_limelight = new Limelight();
+  private final Intake m_intake = new Intake();
 
   // Commands
   private final Drive m_driveSystem = new Drive(m_drivebase);
+  
   // private final LimelightSeek m_seek = new LimelightSeek(m_drivebase, m_limelight);
   // private final RotateCommand m_turn = new RotateCommand(m_drivebase);
   
@@ -51,10 +59,13 @@ public class RobotContainer {
   // Button Bindings
   // JoystickButton ButtonB;
   // public static final CommandWriter recorder = new CommandWriter();
+  CommandWriter test = new CommandWriter();
+  CompressorControl ctest = new CompressorControl(m_intake);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_drivebase.setDefaultCommand(m_driveSystem);
+    // m_drivebase.setDefaultCommand(m_driveSystem);
+    m_intake.setDefaultCommand(ctest);
     // m_limelight.turnOffLED();
     // SendableChooser stuff
     m_chooser.addOption("Rotate 90 Degrees CCW", rotate);
@@ -73,7 +84,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings()
   {
-    // ButtonB.whenPressed(new Rotate90(m_drivebase)); /
+    // new JoystickButton(m_controller, XBOX.B).whenPressed(new SequentialCommandGroup(
+    //   new ToggleIntakeArms(m_intake),
+    //   new WaitCommand(3),
+    //   new ToggleIntakeMotor(m_intake)
+    // ));
   }
 
   /**
@@ -99,6 +114,7 @@ public class RobotContainer {
     //     break; 
     // }
 
-    return new SpookyAuto(m_drivebase);
+    // return new SpookyAuto(m_drivebase);
+    return new ToggleIntakeArms(m_intake);
   }
 }
