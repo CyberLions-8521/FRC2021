@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.io.File;
-import java.io.IOException;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -13,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.LimelightSeek;
 import frc.robot.commands.RotateCommand;
+import frc.robot.commands.SpookyAuto;
 import frc.robot.commands.ToggleIntakeArms;
 import frc.robot.commands.ToggleIntakeMotor;
 // import frc.robot.commands.Rotate90;
@@ -23,6 +22,7 @@ import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.CommandWriter;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -55,8 +55,10 @@ public class RobotContainer {
   private final String rotate = "rotate";
   private final String seek = "seek";
 
+  private final SpookyAuto mTest = new SpookyAuto(m_drivebase);
   // Button Bindings
   // JoystickButton ButtonB;
+  // public static final CommandWriter recorder = new CommandWriter();
   CommandWriter test = new CommandWriter();
   CompressorControl ctest = new CompressorControl(m_intake);
 
@@ -71,7 +73,7 @@ public class RobotContainer {
     SmartDashboard.putData(m_chooser);
     // Configure the button bindings
     // ButtonB = new JoystickButton(m_controller, XBOX.B);
-    configureButtonBindings();
+    configureButtonBindings(); //ll
   }
 
   /**
@@ -82,7 +84,6 @@ public class RobotContainer {
    */
   private void configureButtonBindings()
   {
-    // ButtonB.whenPressed(new Rotate90(m_drivebase));
     // new JoystickButton(m_controller, XBOX.B).whenPressed(new SequentialCommandGroup(
     //   new ToggleIntakeArms(m_intake),
     //   new WaitCommand(3),
@@ -113,6 +114,7 @@ public class RobotContainer {
     //     break; 
     // }
 
+    // return new SpookyAuto(m_drivebase);
     return new ToggleIntakeArms(m_intake);
   }
 }
