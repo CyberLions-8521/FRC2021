@@ -84,10 +84,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings()
   {
+    new JoystickButton(m_controller, XBOX.B).whenPressed(new ToggleIntakeArms(m_intake));
     // new JoystickButton(m_controller, XBOX.B).whenPressed(new SequentialCommandGroup(
     //   new ToggleIntakeArms(m_intake),
-    //   new WaitCommand(3),
-    //   new ToggleIntakeMotor(m_intake)
+    //   new WaitCommand(5),
+    //   new ToggleIntakeArms(m_intake)
+    //   // new ToggleIntakeMotor(m_intake)
     // ));
   }
 
@@ -114,7 +116,7 @@ public class RobotContainer {
     //     break; 
     // }
 
-    // return new SpookyAuto(m_drivebase);
-    return new ToggleIntakeArms(m_intake);
+    return new SpookyAuto(m_drivebase);
+    // return new ToggleIntakeArms(m_intake);
   }
 }

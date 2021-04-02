@@ -147,52 +147,30 @@ public class Drivebase extends SubsystemBase {
 
   public void arcadeDrive(XboxController controller)
   {
+        TURN_REDUCER = (controller.getRawAxis(XBOX.RIGHT_TRIGGER) > 0) ? 0.3 : 0.5;
+        SPEED_REDUCER = (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0) ? 0.3 : 0.5;
+
         double speed = controller.getRawAxis(XBOX.LEFT_STICK_Y) * SPEED_REDUCER;
         double turnRate = controller.getRawAxis(XBOX.RIGHT_STICK_X) * TURN_REDUCER;
         
-        // Experimental: using LR triggers to increase/reduce speed
-        // Decrease turn speed when right trigger pressed
-        if (controller.getRawAxis(XBOX.RIGHT_TRIGGER) > 0) 
-        {
-          turnRate = Math.copySign(turnRate*turnRate, turnRate);
-        }
+
         // // increase turn speed when right button pressed
-        else if (controller.getRawButton(XBOX.RB)) 
+        if (controller.getRawButton(XBOX.RB)) 
         {
-          // Increase the max drive output on the right joystick
-          // turnRate /= 0.9;
-          TURN_REDUCER = 0.6;
+          turnRate = Math.sqrt(turnRate);
         }
-        else if (!controller.getRawButton(XBOX.RB))
-        {
-          TURN_REDUCER = 0.5;
-        }
+        
         // // decrease throttle with left trigger
         if (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0)
         {
-          // Square inputs + reapply the sign
-          speed = Math.copySign(speed*speed, speed);
-        }
-        // increase throttle with left button (the one in front of the trigger)
-        else if (controller.getRawButton(XBOX.LB))
-        {
-          // speed /= 0.9;
-          SPEED_REDUCER = 0.6;
-        }
-        else if (!controller.getRawButton(XBOX.LB))
-        {
-          SPEED_REDUCER = 0.5;
+          speed = Math.sqrt(turnRate);
         }
 
-        // apply filter
-        if (controller.getRawButton(XBOX.LOGO_RIGHT))
-        {
-          SmartDashboard.putNumber("Filtered Throttle", filter.calculate(speed));
-          SmartDashboard.putNumber("Filtered Turn Rate", filter.calculate(turnRate)); 
-        }
+        speed = limitSpeed(speed);
+        turnRate = limitSpeed(turnRate);
 
         // write it idk
-        if (recorder.isReady())
+        if (recorder.isReady() && controller.getXButtonPressed())
         {
           try
           {
@@ -206,34 +184,29 @@ public class Drivebase extends SubsystemBase {
             
           }
         }
-        speed = limitSpeed(speed);
+        
         m_drive.arcadeDrive(speed, -turnRate, false);
 
-        if (recorder.isReady() && controller.getXButton())
+        if (recorder.isReady() && controller.getXButtonPressed())
         {
           recorder.stopRecording();
         }
         SmartDashboard.putNumber("Speed", -speed);
         SmartDashboard.putNumber("Turn Rate", turnRate);
-        // SmartDashboard.putNumber("X Displacement", m_gyro.getDisplacementX());
-        // SmartDashboard.putNumber("Y Displacement", m_gyro.getDisplacementY());
-        // SmartDashboard.putNumber("Z Displacement", m_gyro.getDisplacementZ()); 
-
-    // m_drive.arcadeDrive(throttle, turn);
   }
 
   public void autoArcade(double speed, double turn)
   {
-    m_drive.arcadeDrive(speed, turn);
+    m_drive.arcadeDrive(speed, turn, false);
   }
 
   public double limitSpeed(double speed)
   {
     if (speed > 1.0)
-      speed = 0.7;
+      speed = 0.6;
       // speed = DriveConstants.MAX_OUTPUT;
     else if (speed < -1.0)
-      speed = -0.7;
+      speed = -0.6;
       // speed = -DriveConstants.MAX_OUTPUT;
     
     return speed;

@@ -63,6 +63,7 @@ public class CommandWriter
       }
     }
 
+
     // // Closes the file
     // public void closeFile()
     // {

@@ -24,18 +24,18 @@ public class ToggleIntakeArms extends CommandBase {
   @Override
   public void initialize()
   {
-    m_intake.retractArms();
+    // m_intake.retractArms();
     // m_intake.extendArms();
-    isDone = true;
-    // if (m_intake.isExtended())
-    // {
-    //   m_intake.retractArms();
-    // }
-    // else
-    // {
-    //   m_intake.extendArms();
-    // }
     // isDone = true;
+    if (m_intake.isExtended())
+    {
+      m_intake.retractArms();
+    }
+    else
+    {
+      m_intake.extendArms();
+    }
+    isDone = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.

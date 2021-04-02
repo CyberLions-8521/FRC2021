@@ -28,6 +28,7 @@ public class Intake extends SubsystemBase {
 
   public Intake()
   {
+    // Starts off as retracted 
     retractArms();
     stopSucc();
   }
