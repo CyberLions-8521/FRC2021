@@ -4,13 +4,16 @@
 
 package frc.robot;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.IO;
+import frc.robot.Constants.XBOX;
 import frc.robot.subsystems.CommandWriter;
-
+import frc.robot.subsystems.CommandRunner;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -19,7 +22,8 @@ import frc.robot.subsystems.CommandWriter;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
+  CommandWriter writer;
+  CommandRunner runner;
   private RobotContainer m_robotContainer;
 
   /**
@@ -65,15 +69,34 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    runner = null;
+    try
+    {
+      runner = new CommandRunner();
+    }
+    catch (FileNotFoundException e)
+    {
+      e.printStackTrace();
+    }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic()
   {
+    if (runner != null)
+    {
+      runner.play(RobotContainer.m_drivebase);
+    }
 
+    if (RobotContainer.m_controller.getRawButtonPressed(XBOX.X))
+    {
+      runner.stop(RobotContainer.m_drivebase);
+    }
   }
 
+  
   @Override
   public void teleopInit() {
     // This makes sure that the autonomous stops running when
@@ -83,15 +106,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-  }
 
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic()
-  {
-    // NOT DONE!!
-    // https://github.com/DennisMelamed/FRC-Play-Record-Macro/blob/master/FRC2220-Play-Record-Macro-DM/src/BTMain.java
-    CommandWriter writer = null;
+    writer = null;
     try
     {
       writer = new CommandWriter();
@@ -100,7 +116,40 @@ public class Robot extends TimedRobot {
     {
       e.printStackTrace();
     }
+  }
 
+  /** This function is called periodically during operator control. */
+  @Override
+  public void teleopPeriodic()
+  {
+    // NOT DONE!!
+    // https://github.com/DennisMelamed/FRC-Play-Record-Macro/blob/master/FRC2220-Play-Record-Macro-DM/src/BTMain.java
+    
+    if (writer != null && writer.isRecording())
+    {
+      try
+      {
+        writer.record(RobotContainer.m_drivebase);
+      }
+      catch (IOException e)
+      {
+        e.printStackTrace();
+      }
+    }
+
+    if (RobotContainer.m_controller.getRawButtonPressed(XBOX.X))
+    {
+      try
+      {
+        writer.stopRecording();
+      }
+      catch (IOException e)
+      {
+        e.printStackTrace();
+      }
+      
+    }
+    
 
   }
 

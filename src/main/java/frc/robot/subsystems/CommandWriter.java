@@ -11,8 +11,8 @@ public class CommandWriter
 {
     FileWriter fout;
     long startTime;
-    private String mPath = "/home/lvuser/test.txt";
-
+    private String mPath = "/home/lvuser/blah.csv";
+    boolean m_isRecording;
     boolean success;
     // Default constructor
     public CommandWriter() throws IOException
@@ -20,6 +20,7 @@ public class CommandWriter
       startTime = System.currentTimeMillis();
       fout = new FileWriter(mPath);
       success = true;
+      m_isRecording = true;
     }
 
     public boolean isReady()
@@ -39,11 +40,17 @@ public class CommandWriter
 
     public void stopRecording() throws IOException
     {
+      m_isRecording = false;
       if (fout != null)
       {
         fout.flush();
         fout.close();
       }
+    }
+
+    public boolean isRecording()
+    {
+      return m_isRecording;
     }
 
 

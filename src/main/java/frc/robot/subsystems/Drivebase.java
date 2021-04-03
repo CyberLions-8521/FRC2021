@@ -108,7 +108,7 @@ public class Drivebase extends SubsystemBase {
 
   public void turnInPlace(double adjust)
   {
-    m_drive.arcadeDrive(0.0, adjust, true);
+    m_drive.arcadeDrive(0.0, adjust, false);
     // m_drive.tankDrive(adjust, -adjust, true);
   }
 
@@ -121,7 +121,7 @@ public class Drivebase extends SubsystemBase {
     // Increase corrector to make it move to the left more
     // Decrease to make it move more to the right
     // double corrector = 0.93;
-    double REDUCTION = 0.03;
+    double REDUCTION = 0.05;
     // m_drive.tankDrive(speed, speed*corrector, false);
     m_drive.arcadeDrive(speed, -angle*REDUCTION, false);
   }
@@ -200,13 +200,13 @@ public class Drivebase extends SubsystemBase {
         // // increase turn speed when right button pressed
         if (controller.getRawButton(XBOX.RB)) 
         {
-          turnRate = Math.sqrt(turnRate);
+          turnRate *= 1.1;
         }
         
         // // decrease throttle with left trigger
-        if (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0)
+        if (controller.getRawButton(XBOX.LB))
         {
-          speed = Math.sqrt(turnRate);
+          speed *= 1.1;
         }
 
         speed = limitSpeed(speed);
@@ -227,10 +227,10 @@ public class Drivebase extends SubsystemBase {
   public double limitSpeed(double speed)
   {
     if (speed > 1.0)
-      speed = 0.6;
+      speed = 0.4;
       // speed = DriveConstants.MAX_OUTPUT;
     else if (speed < -1.0)
-      speed = -0.6;
+      speed = -0.4;
       // speed = -DriveConstants.MAX_OUTPUT;
     
     return speed;

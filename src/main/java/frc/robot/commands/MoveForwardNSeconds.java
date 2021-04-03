@@ -33,10 +33,12 @@ public class MoveForwardNSeconds extends CommandBase {
   @Override
   public void execute()
   {
-    m_intake.setMotor(0.8);
+    // uncomment this later
+    // m_intake.setMotor(0.8);
+
     // m_db.moveForward(-0.2);
     // NOTE: may or may not be positive not sure
-    m_db.moveForward(0.2, m_db.getAngle());
+    m_db.moveForward(-0.4, -m_db.getAngle());
   }
 
   // Called once the command ends or is interrupted.

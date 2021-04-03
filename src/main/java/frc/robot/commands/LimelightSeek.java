@@ -63,7 +63,7 @@ public class LimelightSeek extends CommandBase {
     // Check if the target is in the view
     m_targetFound = m_cam.getIsTargetFound();
     // Get the offset from the center of the camera and the target
-    double offset = m_cam.getTx();
+    double offset = -m_cam.getTx();
     m_steeringAdjust = 0.0;
     // If we do not see the target, adjust the steering
     if (!m_targetFound)
@@ -73,7 +73,7 @@ public class LimelightSeek extends CommandBase {
     // We DO see the target
     else
     {
-      m_steeringAdjust = Math.min(Math.abs(DriveConstants.STEER_K * offset), DriveConstants.DRIVE_SLOW);
+      m_steeringAdjust = Math.min(Math.abs(DriveConstants.STEER_K * offset), 0.1);
     }
     // Reapply the sign
     m_steeringAdjust = Math.copySign(m_steeringAdjust, offset);
@@ -117,6 +117,7 @@ public class LimelightSeek extends CommandBase {
   @Override
   public boolean isFinished() {
     // Stop after you reach a target and it's been 5 seconds
-    return m_targetReached;
+    // return m_targetReached;
+    return false;
   }
 }
