@@ -68,10 +68,10 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic()
   {
-    if (m_autonomousCommand.isFinished())
-    {
-      m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    }
+    // if (m_autonomousCommand.isFinished())
+    // {
+    //   m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    // }
   }
 
   @Override

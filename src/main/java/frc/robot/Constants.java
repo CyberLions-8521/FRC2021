@@ -33,7 +33,7 @@ public final class Constants
     public static class VisionConstants
     {
         // Area of the ball in the camera view when the robot stops approaching it
-        public static final double BALL_AREA = 2.1;
+        public static final double BALL_AREA = 0.7;
     }
 
     public static class CAN

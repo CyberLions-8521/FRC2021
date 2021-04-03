@@ -7,7 +7,10 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.XBOX;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.XboxController;
@@ -31,6 +34,13 @@ public class Intake extends SubsystemBase {
     // Starts off as retracted 
     retractArms();
     stopSucc();
+
+   
+  }
+
+  public void setMotor(double speed)
+  {
+    m_IntakeMotor.set(speed);
   }
 
 
@@ -42,19 +52,19 @@ public class Intake extends SubsystemBase {
   
   public void toggleCompressor(XboxController m_controller)
   {
-    if (m_controller.getAButtonPressed())
-    {
-      if (m_compressor.enabled() && !compOn)
-      {
-        compOn = false;
-        m_compressor.stop();
-      }
-      else if (!compOn && !m_compressor.enabled())
-      {
-        compOn = true;
-        m_compressor.start();
-      }
-    }
+    // if (m_controller.getAButtonPressed())
+    // {
+    //   if (m_compressor.enabled() && !compOn)
+    //   {
+    //     compOn = false;
+    //     m_compressor.stop();
+    //   }
+    //   else if (!compOn && !m_compressor.enabled())
+    //   {
+    //     compOn = true;
+    //     m_compressor.start();
+    //   }
+    // }
   }
 
   public boolean isOn()
@@ -91,6 +101,13 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Applied Output", m_IntakeMotor.getAppliedOutput());
+    SmartDashboard.putNumber("Output Current", m_IntakeMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Bus Voltage", m_IntakeMotor.getBusVoltage());
+    SmartDashboard.putNumber("Sticky Faults", m_IntakeMotor.getStickyFaults());
     // This method will be called once per scheduler run
+
+    double intakeSpeed = -RobotContainer.m_aux.getRawAxis(1);
+    m_IntakeMotor.set(intakeSpeed);
   }
 }

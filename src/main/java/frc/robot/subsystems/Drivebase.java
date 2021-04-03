@@ -68,7 +68,10 @@ public class Drivebase extends SubsystemBase {
     // Invert the motors
     m_leftMaster.setInverted(false);
     m_rightMaster.setInverted(false);
-
+    m_leftMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_rightMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_leftSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_rightSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
     m_leftMaster.setOpenLoopRampRate(0.2);
     m_rightMaster.setOpenLoopRampRate(0.2);
     m_leftSlave.setOpenLoopRampRate(0.2);
@@ -83,7 +86,10 @@ public class Drivebase extends SubsystemBase {
     // This method will be called once per scheduler run
     double tHeading = getHeading().getDegrees();
 
-
+    SmartDashboard.putNumber("Applied Output LM", m_leftMaster.getAppliedOutput());
+    SmartDashboard.putNumber("Output Current LM", m_leftMaster.getOutputCurrent());
+    SmartDashboard.putNumber("Bus Voltage LM", m_leftMaster.getBusVoltage());
+    SmartDashboard.putNumber("Sticky Faults LM", m_leftMaster.getStickyFaults());
     SmartDashboard.putNumber("Heading", tHeading);
   }
 
@@ -99,13 +105,14 @@ public class Drivebase extends SubsystemBase {
 
   public void turnInPlace(double adjust)
   {
-    // m_drive.arcadeDrive(0.0, adjust);
-    m_drive.tankDrive(adjust, -adjust);
+    m_drive.arcadeDrive(0.0, adjust, false);
+    // m_drive.tankDrive(adjust, -adjust, true);
   }
 
   public void moveForward(double speed)
   {
-    m_drive.arcadeDrive(speed, 0.0);
+    // m_drive.arcadeDrive(speed, 0.0, false);
+    m_drive.tankDrive(speed, speed*0.93, false);
   }
   
   public void driveWithController(XboxController controller)
@@ -147,8 +154,8 @@ public class Drivebase extends SubsystemBase {
 
   public void arcadeDrive(XboxController controller)
   {
-        TURN_REDUCER = (controller.getRawAxis(XBOX.RIGHT_TRIGGER) > 0) ? 0.3 : 0.5;
-        SPEED_REDUCER = (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0) ? 0.3 : 0.5;
+        TURN_REDUCER = (controller.getRawAxis(XBOX.RIGHT_TRIGGER) > 0) ? 0.4 : 0.5;
+        SPEED_REDUCER = (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0) ? 0.5 : 0.65;
 
         double speed = controller.getRawAxis(XBOX.LEFT_STICK_Y) * SPEED_REDUCER;
         double turnRate = controller.getRawAxis(XBOX.RIGHT_STICK_X) * TURN_REDUCER;
@@ -170,11 +177,11 @@ public class Drivebase extends SubsystemBase {
         turnRate = limitSpeed(turnRate);
 
         // write it idk
-        if (recorder.isReady() && controller.getXButtonPressed())
+        if (recorder.isReady()) //&& controller.getXButtonPressed())
         {
           try
           {
-            for (int i=0; i<2; i++)
+            for (int i=0; i<1; i++)
             {
               recorder.writeDouble(speed);
               recorder.writeDouble(turnRate);
@@ -185,7 +192,7 @@ public class Drivebase extends SubsystemBase {
           }
         }
         
-        m_drive.arcadeDrive(speed, -turnRate, false);
+        m_drive.arcadeDrive(speed, -turnRate, true);
 
         if (recorder.isReady() && controller.getXButtonPressed())
         {

@@ -63,23 +63,27 @@ public class LimelightSeek extends CommandBase {
     m_targetFound = m_cam.getIsTargetFound();
     // Get the offset from the center of the camera and the target
     double offset = m_cam.getTx();
-
+    m_steeringAdjust = 0.0;
     // If we do not see the target, adjust the steering
     if (!m_targetFound)
     {
-      m_steeringAdjust = DriveConstants.TURN_SLOW;
+      m_steeringAdjust = 0.1;
     }
     // We DO see the target
     else
     {
       // Steer rate changes based on offset times steer rate
       // The highest you could steer is MAX_OUTPUT (0.7)
-      m_steeringAdjust = Math.min(Math.abs(DriveConstants.STEER_K * offset), DriveConstants.TURN_SLOW);
+      // m_steeringAdjust = Math.min(Math.abs(DriveConstants.STEER_K * offset), DriveConstants.TURN_SLOW);
+      // m_steeringAdjust = Math.min(Math.abs(0.2 * offset), 0.3);
+      // m_steeringAdjust = Math.copySign(m_steeringAdjust, offset);
+      m_steeringAdjust = 0.01*offset;
       // Note: The offset (tx) is 0 if the robot is perfectly centered onto the ball
     }
     // Reapply the sign
-    m_steeringAdjust *= (offset/offset);
+    // m_steeringAdjust *= (offset/offset);
     // Turn based on the steering adjustment rate determined by the if/else above
+    // m_steeringAdjust = Math.copySign(m_steeringAdjust, offset);
     m_db.turnInPlace(-m_steeringAdjust);
 
     // Update the value on the dashboard
@@ -123,6 +127,6 @@ public class LimelightSeek extends CommandBase {
   @Override
   public boolean isFinished() {
     // Stop after you reach a target and it's been 5 seconds
-    return m_targetReached && (time >= 5.0);
+    return m_targetReached;
   }
 }

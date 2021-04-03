@@ -10,6 +10,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.XBOX;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -33,17 +35,6 @@ public class Limelight extends SubsystemBase {
 
   public Limelight()
   {
-    try 
-    {
-      File file = new File("newdirectory/helloworld.txt");
-      file.mkdirs();
-      file.createNewFile();
-      turnOffLED();
-    }
-    catch (IOException ex)
-    {
-      ex.printStackTrace();
-    }
     turnOffLED();
   }
 
@@ -59,7 +50,7 @@ public class Limelight extends SubsystemBase {
     // Whether or not a valid target has appeared
     double valid = tv.getDouble(0.0);
 
-    if (RobotContainer.m_controller.getAButtonPressed())
+    if (RobotContainer.m_controller.getRawButtonPressed(XBOX.LOGO_RIGHT))
     {
       switch (m_LEDStatus)
       {

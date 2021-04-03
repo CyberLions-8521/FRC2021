@@ -6,10 +6,13 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.LimelightSeek;
+import frc.robot.commands.MoveForwardNSeconds;
 import frc.robot.commands.RotateCommand;
 import frc.robot.commands.SpookyAuto;
 import frc.robot.commands.ToggleIntakeArms;
@@ -35,7 +38,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-
+  // PowerDistributionPanel m_pdp = new PowerDistributionPanel();
   // Subsystems
   private Drivebase m_drivebase = new Drivebase();
   private Limelight m_limelight = new Limelight();
@@ -49,9 +52,9 @@ public class RobotContainer {
   
   // Controller
   public static final XboxController m_controller = new XboxController(Constants.IO.kXBOX);
-
+  public static final Joystick m_aux = new Joystick(1);
   // Testing random stuff out today with SendableChooser
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  // private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final String rotate = "rotate";
   private final String seek = "seek";
 
@@ -64,13 +67,14 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // m_drivebase.setDefaultCommand(m_driveSystem);
+    // m_pdp.clearStickyFaults();
+    m_drivebase.setDefaultCommand(m_driveSystem);
     m_intake.setDefaultCommand(ctest);
     // m_limelight.turnOffLED();
     // SendableChooser stuff
-    m_chooser.addOption("Rotate 90 Degrees CCW", rotate);
-    m_chooser.addOption("Find ball", seek);
-    SmartDashboard.putData(m_chooser);
+    // m_chooser.addOption("Rotate 90 Degrees CCW", rotate);
+    // m_chooser.addOption("Find ball", seek);
+    // SmartDashboard.putData(m_chooser);
     // Configure the button bindings
     // ButtonB = new JoystickButton(m_controller, XBOX.B);
     configureButtonBindings(); //ll
@@ -117,6 +121,17 @@ public class RobotContainer {
     // }
 
     return new SpookyAuto(m_drivebase);
-    // return new ToggleIntakeArms(m_intake);
+    // LimelightSeek test = new LimelightSeek(m_drivebase, m_limelight);
+    // // return new ToggleIntakeArms(m_intake);
+    // // return test;
+    // // return new LimelightSeek(m_drivebase, m_limelight);
+
+    // return new SequentialCommandGroup(
+    //   // new LimelightSeek(m_drivebase, m_limelight),
+    //   new WaitCommand(3),
+    //   new ToggleIntakeArms(m_intake),
+    //   new WaitCommand(3),
+    //   new MoveForwardNSeconds(m_drivebase, m_intake).withTimeout(8) 
+    // );
   }
 }
