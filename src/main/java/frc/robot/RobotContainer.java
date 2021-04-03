@@ -62,7 +62,7 @@ public class RobotContainer {
   // Button Bindings
   // JoystickButton ButtonB;
   // public static final CommandWriter recorder = new CommandWriter();
-  CommandWriter test = new CommandWriter();
+
   CompressorControl ctest = new CompressorControl(m_intake);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */

@@ -101,10 +101,10 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Applied Output", m_IntakeMotor.getAppliedOutput());
-    SmartDashboard.putNumber("Output Current", m_IntakeMotor.getOutputCurrent());
-    SmartDashboard.putNumber("Bus Voltage", m_IntakeMotor.getBusVoltage());
-    SmartDashboard.putNumber("Sticky Faults", m_IntakeMotor.getStickyFaults());
+    // SmartDashboard.putNumber("Applied Output", m_IntakeMotor.getAppliedOutput());
+    // SmartDashboard.putNumber("Output Current", m_IntakeMotor.getOutputCurrent());
+    // SmartDashboard.putNumber("Bus Voltage", m_IntakeMotor.getBusVoltage());
+    // SmartDashboard.putNumber("Sticky Faults", m_IntakeMotor.getStickyFaults());
     // This method will be called once per scheduler run
 
     double intakeSpeed = -RobotContainer.m_aux.getRawAxis(1);

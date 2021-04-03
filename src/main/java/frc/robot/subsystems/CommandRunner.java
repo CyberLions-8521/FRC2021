@@ -3,63 +3,72 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import frc.robot.subsystems.Drivebase;
 
 /** This class reads in some file and creates trajectories or something idk */
 public class CommandRunner
 {
-    BufferedReader fin;
-    boolean success;
-    String line;
-    ArrayList<Double> throttles;
-    ArrayList<Double> turns;
-    public CommandRunner(String path)
+    Scanner scanner;
+    long startTime;
+    boolean onTime = true;
+    double nextDouble;
+
+    public CommandRunner() throws FileNotFoundException
     {
-        try
+        scanner = new Scanner(new File("/home/lvuser/test.txt"));
+        scanner.useDelimiter(",|\\n");
+        startTime = System.currentTimeMillis();
+    }
+
+    
+    public void play(Drivebase db)
+    {
+        if ((scanner != null) && (scanner.hasNextDouble()))
         {
-            fin = new BufferedReader(new FileReader("path"));
-            success = true;
-            line = fin.readLine();
-            while (line != null)
+            double dt;
+
+            if (onTime)
             {
-                SmartDashboard.putString("READING IN", line);
-                throttles.add(Double.parseDouble(line));
-                line = fin.readLine();
-                if (line == null) break;
-                turns.add(Double.parseDouble(line));
-                line = fin.readLine();
-                if (line == null) break;
+                nextDouble = scanner.nextDouble();
+            }
+
+            dt = nextDouble - (System.currentTimeMillis()-startTime);
+
+            if (dt <= 0)
+            {
+                db.getLeftMotor().set(scanner.nextDouble());
+                db.getRightMotor().set(scanner.nextDouble());
+                onTime = true;
+            }
+            else
+            {
+                onTime = false;
             }
         }
-        catch (FileNotFoundException e)
+        else
         {
-            success = false;
+            stop(db);
+            if (scanner != null)
+            {
+                scanner.close();
+                scanner = null;
+            }
+
         }
-        catch (IOException e)
+    }
+
+    public void stop(Drivebase db)
+    {
+        db.getLeftMotor().stopMotor();
+        db.getRightMotor().stopMotor();
+
+        if (scanner != null)
         {
-
+            scanner.close();
         }
-        
-    }
-
-    public boolean isReady()
-    {
-        return success;
-    }
-
-    public ArrayList<Double> getThrottles()
-    {
-        return throttles;
-    }
-
-    public ArrayList<Double> getTurns()
-    {
-        return turns;
     }
 }

@@ -12,6 +12,7 @@ public class MoveForwardNSeconds extends CommandBase {
   /** Creates a new MoveForwardNSeconds. */
   Drivebase m_db;
   Intake m_intake;
+  double m_InitHeading;
   public MoveForwardNSeconds(Drivebase db, Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_db = db;
@@ -24,7 +25,8 @@ public class MoveForwardNSeconds extends CommandBase {
   @Override
   public void initialize()
   {
-    // m_intake.extendArms();
+    m_db.getGyro().reset();
+    m_InitHeading = m_db.getAngle();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,7 +34,9 @@ public class MoveForwardNSeconds extends CommandBase {
   public void execute()
   {
     m_intake.setMotor(0.8);
-    m_db.moveForward(-0.2);
+    // m_db.moveForward(-0.2);
+    // NOTE: may or may not be positive not sure
+    m_db.moveForward(0.2, m_db.getAngle());
   }
 
   // Called once the command ends or is interrupted.

@@ -11,6 +11,9 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.VisionConstants;
 
+/**
+ *  This class finds a power cell and then moves close to it.
+ */
 public class LimelightSeek extends CommandBase {
   /** Creates a new LimelightSeek. */
   Limelight m_cam;
@@ -18,11 +21,9 @@ public class LimelightSeek extends CommandBase {
   boolean m_targetFound;
   boolean m_targetReached;
   double m_steeringAdjust;
-  double time;
 
   public LimelightSeek(Drivebase db, Limelight cam)
   {
-    time = 0.0;
     m_cam = cam;
     m_db = db;
     m_steeringAdjust = 0.0;
@@ -72,19 +73,12 @@ public class LimelightSeek extends CommandBase {
     // We DO see the target
     else
     {
-      // Steer rate changes based on offset times steer rate
-      // The highest you could steer is MAX_OUTPUT (0.7)
-      // m_steeringAdjust = Math.min(Math.abs(DriveConstants.STEER_K * offset), DriveConstants.TURN_SLOW);
-      // m_steeringAdjust = Math.min(Math.abs(0.2 * offset), 0.3);
-      // m_steeringAdjust = Math.copySign(m_steeringAdjust, offset);
-      m_steeringAdjust = 0.01*offset;
-      // Note: The offset (tx) is 0 if the robot is perfectly centered onto the ball
+      m_steeringAdjust = Math.min(Math.abs(DriveConstants.STEER_K * offset), DriveConstants.DRIVE_SLOW);
     }
     // Reapply the sign
-    // m_steeringAdjust *= (offset/offset);
-    // Turn based on the steering adjustment rate determined by the if/else above
-    // m_steeringAdjust = Math.copySign(m_steeringAdjust, offset);
-    m_db.turnInPlace(-m_steeringAdjust);
+    m_steeringAdjust = Math.copySign(m_steeringAdjust, offset);
+    // Reverse the sign?
+    m_db.turnInPlace(m_steeringAdjust);
 
     // Update the value on the dashboard
     SmartDashboard.putNumber("Steering Adjust", m_steeringAdjust);
@@ -105,18 +99,14 @@ public class LimelightSeek extends CommandBase {
       // Then move towards it slowly
       speed = -DriveConstants.DRIVE_SLOW;
       m_targetReached = false;
-      time = 0.0;
     }
     else
     {
       speed = 0.0;
       m_targetReached = true;
-      time += 0.02;
     }
 
-    // Actually move
     m_db.moveForward(speed);
-    
   }
 
   // Called once the command ends or is interrupted.

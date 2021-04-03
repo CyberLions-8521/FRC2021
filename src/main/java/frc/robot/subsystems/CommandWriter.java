@@ -1,74 +1,50 @@
 package frc.robot.subsystems;
-// import java.io.FileWriter;
-import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
-// import frc.robot.subsystems.Drivebase;
-// import the robot
+import java.io.FileWriter;
+
+
 /**
  * This class is used to write throttle/speed values to a csv file.
  */
 public class CommandWriter
 {
-    File file;
-    FileOutputStream fout;
-    private String mPath;
-    // FileWriter fout;
+    FileWriter fout;
+    long startTime;
+    private String mPath = "/home/lvuser/test.txt";
 
     boolean success;
     // Default constructor
-    public CommandWriter()
+    public CommandWriter() throws IOException
     {
-      try
-      {
-        mPath = "/home/lvuser/test.txt";
-        file = new File(mPath);
-        file.createNewFile();
-        fout = new FileOutputStream(file, false);
-        // String content = "cow\n";
-        // fout.write(content.getBytes());
-        success = true;
-      }
-      catch (IOException e)
-      {
-        success = false;
-      }
+      startTime = System.currentTimeMillis();
+      fout = new FileWriter(mPath);
+      success = true;
     }
 
     public boolean isReady()
     {
       return success;
     }
-
-    public void writeDouble(double value) throws IOException
+    
+    public void record(Drivebase db) throws IOException
     {
-      if (isReady())
+      if (fout != null)
       {
-        String content = ""+ value + "\n";
-        fout.write(content.getBytes());
-        // fout.flush();
-        // fout.close();
+        fout.append("" + (System.currentTimeMillis()-startTime));
+        fout.append("," + db.getLeftMotor().get());
+        fout.append("," + db.getRightMotor().get());
       }
     }
 
-    public void stopRecording()
+    public void stopRecording() throws IOException
     {
-      try
+      if (fout != null)
       {
-      fout.flush();
-      fout.close();
-      } catch (IOException e)
-      {
-
+        fout.flush();
+        fout.close();
       }
     }
-
-
-    // // Closes the file
-    // public void closeFile()
-    // {
-    //   fout.close();
-    // }
 
 
 

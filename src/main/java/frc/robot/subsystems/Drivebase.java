@@ -11,7 +11,8 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveMode;
 import frc.robot.Constants.XBOX;
-import frc.robot.commands.Drive;
+// import frc.robot.commands.Drive;
+import java.util.ArrayList;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
@@ -28,7 +29,6 @@ public class Drivebase extends SubsystemBase {
   /** Creates a new Drivebase. */
   // Descriptions
   String driveMode = "Drive Mode";
-  CommandWriter recorder;
 
   // Filter thing pew pew pew
   // trying a smaller value for the rate limit
@@ -48,6 +48,8 @@ public class Drivebase extends SubsystemBase {
   // Differential drive class
   DifferentialDrive m_drive = new DifferentialDrive(m_leftMaster, m_rightMaster);
 
+  double speed;
+  double turnRate;
   // Gyro
   AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
@@ -56,11 +58,12 @@ public class Drivebase extends SubsystemBase {
 
   public Drivebase()
   {
-    recorder = new CommandWriter();
     // Default mode is tank drive
     m_mode = DriveMode.ARCADE;
-
-    m_gyro.reset();
+    speed = 0.0;
+    turnRate = 0.0;
+    m_gyro.calibrate();
+    // m_gyro.reset();
 
     m_leftSlave.follow(m_leftMaster);
     m_rightSlave.follow(m_rightMaster);
@@ -86,10 +89,10 @@ public class Drivebase extends SubsystemBase {
     // This method will be called once per scheduler run
     double tHeading = getHeading().getDegrees();
 
-    SmartDashboard.putNumber("Applied Output LM", m_leftMaster.getAppliedOutput());
-    SmartDashboard.putNumber("Output Current LM", m_leftMaster.getOutputCurrent());
-    SmartDashboard.putNumber("Bus Voltage LM", m_leftMaster.getBusVoltage());
-    SmartDashboard.putNumber("Sticky Faults LM", m_leftMaster.getStickyFaults());
+    // SmartDashboard.putNumber("Applied Output LM", m_leftMaster.getAppliedOutput());
+    // SmartDashboard.putNumber("Output Current LM", m_leftMaster.getOutputCurrent());
+    // SmartDashboard.putNumber("Bus Voltage LM", m_leftMaster.getBusVoltage());
+    // SmartDashboard.putNumber("Sticky Faults LM", m_leftMaster.getStickyFaults());
     SmartDashboard.putNumber("Heading", tHeading);
   }
 
@@ -105,14 +108,46 @@ public class Drivebase extends SubsystemBase {
 
   public void turnInPlace(double adjust)
   {
-    m_drive.arcadeDrive(0.0, adjust, false);
+    m_drive.arcadeDrive(0.0, adjust, true);
     // m_drive.tankDrive(adjust, -adjust, true);
+  }
+
+  /**
+   * Drive straight with the help of the 9-axis IMU (that's hopefully not damaged by now lol)
+   * @param speed - A value between -1 and 1 
+   */
+  public void moveForward(double speed, double angle)
+  {
+    // Increase corrector to make it move to the left more
+    // Decrease to make it move more to the right
+    // double corrector = 0.93;
+    double REDUCTION = 0.03;
+    // m_drive.tankDrive(speed, speed*corrector, false);
+    m_drive.arcadeDrive(speed, -angle*REDUCTION, false);
+  }
+
+  public double getThrottle()
+  {
+    return speed;
+  }
+
+  public double getTurnRate()
+  {
+    return turnRate;
   }
 
   public void moveForward(double speed)
   {
-    // m_drive.arcadeDrive(speed, 0.0, false);
-    m_drive.tankDrive(speed, speed*0.93, false);
+    m_drive.arcadeDrive(speed, 0.0, true);
+  }
+  public CANSparkMax getLeftMotor()
+  {
+    return m_leftMaster;
+  }
+
+  public CANSparkMax getRightMotor()
+  {
+    return m_rightMaster;
   }
   
   public void driveWithController(XboxController controller)
@@ -152,13 +187,14 @@ public class Drivebase extends SubsystemBase {
     SmartDashboard.putString("Arcade Drive", driveMode);
   }
 
+
   public void arcadeDrive(XboxController controller)
   {
         TURN_REDUCER = (controller.getRawAxis(XBOX.RIGHT_TRIGGER) > 0) ? 0.4 : 0.5;
         SPEED_REDUCER = (controller.getRawAxis(XBOX.LEFT_TRIGGER) > 0) ? 0.5 : 0.65;
 
-        double speed = controller.getRawAxis(XBOX.LEFT_STICK_Y) * SPEED_REDUCER;
-        double turnRate = controller.getRawAxis(XBOX.RIGHT_STICK_X) * TURN_REDUCER;
+        speed = controller.getRawAxis(XBOX.LEFT_STICK_Y) * SPEED_REDUCER;
+        turnRate = controller.getRawAxis(XBOX.RIGHT_STICK_X) * TURN_REDUCER;
         
 
         // // increase turn speed when right button pressed
@@ -176,28 +212,9 @@ public class Drivebase extends SubsystemBase {
         speed = limitSpeed(speed);
         turnRate = limitSpeed(turnRate);
 
-        // write it idk
-        if (recorder.isReady()) //&& controller.getXButtonPressed())
-        {
-          try
-          {
-            for (int i=0; i<1; i++)
-            {
-              recorder.writeDouble(speed);
-              recorder.writeDouble(turnRate);
-            }
-          } catch (IOException e)
-          {
-            
-          }
-        }
         
         m_drive.arcadeDrive(speed, -turnRate, true);
 
-        if (recorder.isReady() && controller.getXButtonPressed())
-        {
-          recorder.stopRecording();
-        }
         SmartDashboard.putNumber("Speed", -speed);
         SmartDashboard.putNumber("Turn Rate", turnRate);
   }
@@ -218,6 +235,7 @@ public class Drivebase extends SubsystemBase {
     
     return speed;
   }
+
 
 
   public AHRS getGyro()

@@ -4,9 +4,12 @@
 
 package frc.robot;
 
+import java.io.IOException;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.CommandWriter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -68,10 +71,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic()
   {
-    // if (m_autonomousCommand.isFinished())
-    // {
-    //   m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    // }
+
   }
 
   @Override
@@ -87,7 +87,22 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic()
+  {
+    // NOT DONE!!
+    // https://github.com/DennisMelamed/FRC-Play-Record-Macro/blob/master/FRC2220-Play-Record-Macro-DM/src/BTMain.java
+    CommandWriter writer = null;
+    try
+    {
+      writer = new CommandWriter();
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
+
+
+  }
 
   @Override
   public void testInit() {
