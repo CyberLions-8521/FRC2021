@@ -5,6 +5,8 @@
 package frc.robot;
 
 
+import java.sql.DriverPropertyInfo;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -25,6 +27,7 @@ import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.CommandWriter;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -104,36 +107,89 @@ public class RobotContainer {
    */
   // https://github.com/Cyberheart6009/FRC-2020-Robot/blob/master/src/main/java/frc/robot/RobotContainer.java
   public Command getAutonomousCommand() {
-    // String m_selected = m_chooser.getSelected();
-    // Command m_command;
-
-    // switch (m_selected)
-    // {
-    //   case rotate:
-    //     m_command = (new RotateCommand(m_drivebase));
-    //     break;
-    //   case seek:
-    //     m_command = (new LimelightSeek(m_drivebase, m_limelight));
-    //     break;
-    //   default:
-    //     m_command = (new LimelightSeek(m_drivebase, m_limelight));
-    //     break; 
-    // }
     
-    // return new MoveForwardNSeconds(m_drivebase, m_intake).withTimeout(5);
-    return new LimelightSeek(m_drivebase, m_limelight);
-    // return new SpookyAuto(m_drivebase);
-    // LimelightSeek test = new LimelightSeek(m_drivebase, m_limelight);
-    // // return new ToggleIntakeArms(m_intake);
-    // // return test;
-    // // return new LimelightSeek(m_drivebase, m_limelight);
-
     // return new SequentialCommandGroup(
-    //   // new LimelightSeek(m_drivebase, m_limelight),
-    //   new WaitCommand(3),
-    //   new ToggleIntakeArms(m_intake),
-    //   new WaitCommand(3),
-    //   new MoveForwardNSeconds(m_drivebase, m_intake).withTimeout(8) 
+    //   new MoveForwardNSeconds(m_drivebase, m_intake).withTimeout(5),
+    //   new RotateCommand(m_drivebase, 90.0)
     // );
+    MoveForwardNSeconds t = new MoveForwardNSeconds(m_drivebase, m_intake, 0.4);
+    // positive angle = clockwise, negative = ccw
+    // return new RotateCommand(m_drivebase, -90.0);
+    // Path A Red
+    // return new SequentialCommandGroup(
+    //   new ToggleIntakeArms(m_intake),
+    //   new WaitCommand(1),
+    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.8),
+    //   new WaitCommand(1),
+    //   new RotateCommand(m_drivebase, -85.0),
+    //   new WaitCommand(1),
+    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(1.8),
+    //   new WaitCommand(1),
+    //   new RotateCommand(m_drivebase, 65.0),
+    //   new WaitCommand(1),
+    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(3.4)
+    // );
+
+    // Path B
+    // return new SequentialCommandGroup(
+    //   new ToggleIntakeArms(m_intake),
+    //   new WaitCommand(1),
+    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(0.7),
+    //   new WaitCommand(1),
+    //   new RotateCommand(m_drivebase, 23.0),
+    //   new WaitCommand(1),
+    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.8),
+    //   new WaitCommand(1),
+    //   new RotateCommand(m_drivebase, -84.0),
+    //   new WaitCommand(1),
+    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(1.8),
+    //   new WaitCommand(1),
+    //   new RotateCommand(m_drivebase, 68.0),
+    //   new WaitCommand(1),
+    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(3.8)
+    // );
+    
+    return new SequentialCommandGroup(
+      new WaitCommand(1),
+      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(0.9),
+      new WaitCommand(1),
+      new RotateCommand(m_drivebase, -48.3),
+      new WaitCommand(1),
+      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(1.35),
+      new WaitCommand(1),
+      new RotateCommand(m_drivebase, 54.8),
+      new WaitCommand(1),
+      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.9),
+      new WaitCommand(1),
+      new RotateCommand(m_drivebase, 40.0),
+      new WaitCommand(1),
+      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(1.25),
+      new WaitCommand(1),
+      new RotateCommand(m_drivebase, -45.0),
+      new WaitCommand(1),
+      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(0.8),
+      new WaitCommand(1),
+      new RotateCommand(m_drivebase, -90.0),
+      new WaitCommand(1),
+      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(1.7),
+      new WaitCommand(1),
+      new RotateCommand(m_drivebase, -120.0),
+      new WaitCommand(1),
+      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.1),
+      new WaitCommand(1),
+      new RotateCommand(m_drivebase, 42.0),
+      new WaitCommand(1),
+      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.9),
+      new WaitCommand(1),
+      new RotateCommand(m_drivebase, 45.0),
+      new WaitCommand(1),
+      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.0)
+
+
+
+    );
+    // return new ToggleIntakeMotor(m_intake);
+    
+    // return 
   }
 }

@@ -13,9 +13,11 @@ public class MoveForwardNSeconds extends CommandBase {
   Drivebase m_db;
   Intake m_intake;
   double m_InitHeading;
-  public MoveForwardNSeconds(Drivebase db, Intake intake) {
+  double m_speed;
+  public MoveForwardNSeconds(Drivebase db, Intake intake, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_db = db;
+    m_speed = speed;
     m_intake = intake;
     addRequirements(db);
     addRequirements(intake);
@@ -34,11 +36,11 @@ public class MoveForwardNSeconds extends CommandBase {
   public void execute()
   {
     // uncomment this later
-    // m_intake.setMotor(0.8);
+    m_intake.setMotor(1.0);
 
     // m_db.moveForward(-0.2);
     // NOTE: may or may not be positive not sure
-    m_db.moveForward(-0.4, -m_db.getAngle());
+    m_db.moveForward(-m_speed, -m_db.getAngle());
   }
 
   // Called once the command ends or is interrupted.

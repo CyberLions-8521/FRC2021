@@ -13,8 +13,10 @@ public class RotateCommand extends CommandBase {
   Drivebase m_db;
   double currentAngle;
   double targetAngle;
-  public RotateCommand(Drivebase db) {
+  double turn;
+  public RotateCommand(Drivebase db, double angle) {
     m_db = db;
+    turn = angle;
     addRequirements(db);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -25,7 +27,7 @@ public class RotateCommand extends CommandBase {
   {
     m_db.getGyro().reset();
     currentAngle = m_db.getAngle();
-    targetAngle = currentAngle + 90.0;
+    targetAngle = currentAngle + turn;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,11 +37,11 @@ public class RotateCommand extends CommandBase {
     currentAngle = m_db.getAngle();
     if (currentAngle < targetAngle)
     {
-      m_db.turnInPlace(-DriveConstants.TURN_SLOW);
+      m_db.turnInPlace(-0.35);
     }
     else if (currentAngle > targetAngle)
     {
-      m_db.turnInPlace(DriveConstants.TURN_SLOW);
+      m_db.turnInPlace(0.35);
     }
   
 

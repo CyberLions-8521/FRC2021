@@ -108,7 +108,7 @@ public class Drivebase extends SubsystemBase {
 
   public void turnInPlace(double adjust)
   {
-    m_drive.arcadeDrive(0.0, adjust, false);
+    m_drive.arcadeDrive(0.0, adjust, true);
     // m_drive.tankDrive(adjust, -adjust, true);
   }
 

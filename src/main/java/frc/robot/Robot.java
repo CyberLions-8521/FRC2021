@@ -70,30 +70,12 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
     }
 
-    runner = null;
-    try
-    {
-      runner = new CommandRunner();
-    }
-    catch (FileNotFoundException e)
-    {
-      e.printStackTrace();
-    }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic()
   {
-    if (runner != null)
-    {
-      runner.play(RobotContainer.m_drivebase);
-    }
-
-    if (RobotContainer.m_controller.getRawButtonPressed(XBOX.X))
-    {
-      runner.stop(RobotContainer.m_drivebase);
-    }
   }
 
   
@@ -107,48 +89,14 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    writer = null;
-    try
-    {
-      writer = new CommandWriter();
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
-    }
+
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic()
   {
-    // NOT DONE!!
-    // https://github.com/DennisMelamed/FRC-Play-Record-Macro/blob/master/FRC2220-Play-Record-Macro-DM/src/BTMain.java
-    
-    if (writer != null && writer.isRecording())
-    {
-      try
-      {
-        writer.record(RobotContainer.m_drivebase);
-      }
-      catch (IOException e)
-      {
-        e.printStackTrace();
-      }
-    }
-
-    if (RobotContainer.m_controller.getRawButtonPressed(XBOX.X))
-    {
-      try
-      {
-        writer.stopRecording();
-      }
-      catch (IOException e)
-      {
-        e.printStackTrace();
-      }
-      
-    }
+  
     
 
   }
