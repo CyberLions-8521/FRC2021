@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.LimelightSeek;
 import frc.robot.commands.MoveForwardNSeconds;
 import frc.robot.commands.RotateCommand;
-import frc.robot.commands.SpookyAuto;
 import frc.robot.commands.ToggleIntakeArms;
 import frc.robot.commands.ToggleIntakeMotor;
 // import frc.robot.commands.Rotate90;
@@ -33,12 +32,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
+
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // PowerDistributionPanel m_pdp = new PowerDistributionPanel();
@@ -58,10 +52,9 @@ public class RobotContainer {
   public static final Joystick m_aux = new Joystick(1);
   // Testing random stuff out today with SendableChooser
   // private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private final String rotate = "rotate";
-  private final String seek = "seek";
+  //private final String rotate = "rotate";
+  //private final String seek = "seek";
 
-  private final SpookyAuto mTest = new SpookyAuto(m_drivebase);
   // Button Bindings
   // JoystickButton ButtonB;
   // public static final CommandWriter recorder = new CommandWriter();
@@ -92,12 +85,13 @@ public class RobotContainer {
   private void configureButtonBindings()
   {
     new JoystickButton(m_controller, XBOX.B).whenPressed(new ToggleIntakeArms(m_intake));
-    // new JoystickButton(m_controller, XBOX.B).whenPressed(new SequentialCommandGroup(
-    //   new ToggleIntakeArms(m_intake),
-    //   new WaitCommand(5),
-    //   new ToggleIntakeArms(m_intake)
-    //   // new ToggleIntakeMotor(m_intake)
-    // ));
+    //new JoystickButton(m_controller, XBOX.B).whenPressed(new ToggleIntakeMotor(m_intake)); Thiens Edit
+    new JoystickButton(m_controller, XBOX.B).whenPressed(new SequentialCommandGroup(
+      new ToggleIntakeArms(m_intake),
+      new WaitCommand(5),
+      new ToggleIntakeArms(m_intake)
+        //new ToggleIntakeMotor(m_intake)
+    ));
   }
 
   /**
@@ -107,89 +101,8 @@ public class RobotContainer {
    */
   // https://github.com/Cyberheart6009/FRC-2020-Robot/blob/master/src/main/java/frc/robot/RobotContainer.java
   public Command getAutonomousCommand() {
-    
-    // return new SequentialCommandGroup(
-    //   new MoveForwardNSeconds(m_drivebase, m_intake).withTimeout(5),
-    //   new RotateCommand(m_drivebase, 90.0)
-    // );
-    MoveForwardNSeconds t = new MoveForwardNSeconds(m_drivebase, m_intake, 0.4);
-    // positive angle = clockwise, negative = ccw
-    // return new RotateCommand(m_drivebase, -90.0);
-    // Path A Red
-    // return new SequentialCommandGroup(
-    //   new ToggleIntakeArms(m_intake),
-    //   new WaitCommand(1),
-    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.8),
-    //   new WaitCommand(1),
-    //   new RotateCommand(m_drivebase, -85.0),
-    //   new WaitCommand(1),
-    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(1.8),
-    //   new WaitCommand(1),
-    //   new RotateCommand(m_drivebase, 65.0),
-    //   new WaitCommand(1),
-    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(3.4)
-    // );
+    return new ToggleIntakeMotor(m_intake);
+  }  
 
-    // Path B
-    // return new SequentialCommandGroup(
-    //   new ToggleIntakeArms(m_intake),
-    //   new WaitCommand(1),
-    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(0.7),
-    //   new WaitCommand(1),
-    //   new RotateCommand(m_drivebase, 23.0),
-    //   new WaitCommand(1),
-    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.8),
-    //   new WaitCommand(1),
-    //   new RotateCommand(m_drivebase, -84.0),
-    //   new WaitCommand(1),
-    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(1.8),
-    //   new WaitCommand(1),
-    //   new RotateCommand(m_drivebase, 68.0),
-    //   new WaitCommand(1),
-    //   new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(3.8)
-    // );
-    
-    return new SequentialCommandGroup(
-      new WaitCommand(1),
-      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(0.9),
-      new WaitCommand(1),
-      new RotateCommand(m_drivebase, -48.3),
-      new WaitCommand(1),
-      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(1.35),
-      new WaitCommand(1),
-      new RotateCommand(m_drivebase, 54.8),
-      new WaitCommand(1),
-      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.9),
-      new WaitCommand(1),
-      new RotateCommand(m_drivebase, 40.0),
-      new WaitCommand(1),
-      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(1.25),
-      new WaitCommand(1),
-      new RotateCommand(m_drivebase, -45.0),
-      new WaitCommand(1),
-      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(0.8),
-      new WaitCommand(1),
-      new RotateCommand(m_drivebase, -90.0),
-      new WaitCommand(1),
-      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(1.7),
-      new WaitCommand(1),
-      new RotateCommand(m_drivebase, -120.0),
-      new WaitCommand(1),
-      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.1),
-      new WaitCommand(1),
-      new RotateCommand(m_drivebase, 42.0),
-      new WaitCommand(1),
-      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.9),
-      new WaitCommand(1),
-      new RotateCommand(m_drivebase, 45.0),
-      new WaitCommand(1),
-      new MoveForwardNSeconds(m_drivebase, m_intake, 0.4).withTimeout(2.0)
-
-
-
-    );
-    // return new ToggleIntakeMotor(m_intake);
-    
-    // return 
-  }
+  
 }
